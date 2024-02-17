@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content_nav_graph"
+    app:startDestination="@id/apartmentsFragment">
+    <fragment
+        android:id="@+id/apartmentsFragment"
+        android:name="com.example.apartments.modules.apartments.ApartmentsFragment"
+        android:label="fragment_apartments"
+        tools:layout="@layout/fragment_apartments" />
+    <fragment
+        android:id="@+id/addApartmentFragment"
+        android:name="com.example.apartments.modules.add-apartment.AddApartmentFragment"
+        android:label="fragment_add_apartment"
+        tools:layout="@layout/fragment_add_apartment" />
+</navigation>
