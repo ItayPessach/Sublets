@@ -1,4 +1,4 @@
-package com.example.apartments.modules.`add-apartment`
+package com.example.apartments.modules.addApartment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

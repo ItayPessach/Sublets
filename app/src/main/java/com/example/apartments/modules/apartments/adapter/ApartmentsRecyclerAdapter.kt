@@ -10,7 +10,7 @@ interface OnItemClickListener {
     fun onItemClick(apartmentId: Int)
 }
 
-class ApartmentsRecyclerAdapter(private val apartments: List<Apartment>): RecyclerView.Adapter<ApartmentsViewHolder>() {
+class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?): RecyclerView.Adapter<ApartmentsViewHolder>() {
     var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApartmentsViewHolder {
@@ -18,12 +18,11 @@ class ApartmentsRecyclerAdapter(private val apartments: List<Apartment>): Recycl
         return ApartmentsViewHolder(itemView, this)
     }
 
-    override fun getItemCount(): Int = apartments.size ?: 0
+    override fun getItemCount(): Int = apartments?.size ?: 0
 
     override fun onBindViewHolder(holder: ApartmentsViewHolder, position: Int) {
-        val apartment = apartments[position]
-        holder.titleTextView?.text = apartment.title
-        holder.subtitleTextView?.text = apartment.subtitle
+        val apartment = apartments?.get(position)
+        holder.bind(apartment)
         // holder.image?.setImageResource(apartment.image)
     }
 

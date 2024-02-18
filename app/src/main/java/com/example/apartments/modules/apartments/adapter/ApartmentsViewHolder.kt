@@ -5,6 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.R
+import com.example.apartments.model.apartment.Apartment
 
 class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): RecyclerView.ViewHolder(itemView) {
     var titleTextView: TextView? = null
@@ -23,5 +24,10 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
                 adapter.onClick(position)
             }
         }
+    }
+
+    fun bind(apartment: Apartment?) {
+        titleTextView?.text = apartment?.title
+        subtitleTextView?.text = apartment?.subtitle
     }
 }

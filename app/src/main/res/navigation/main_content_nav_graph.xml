@@ -11,7 +11,7 @@
         tools:layout="@layout/fragment_apartments" />
     <fragment
         android:id="@+id/addApartmentFragment"
-        android:name="com.example.apartments.modules.add-apartment.AddApartmentFragment"
+        android:name="com.example.apartments.modules.addApartment.AddApartmentFragment"
         android:label="fragment_add_apartment"
         tools:layout="@layout/fragment_add_apartment" />
 </navigation>
