@@ -11,9 +11,14 @@ import android.widget.EditText
 import androidx.navigation.Navigation
 import com.example.apartments.R
 import com.example.apartments.common.RequiredValidation
+import com.example.apartments.databinding.FragmentLoginBinding
+import com.example.apartments.databinding.FragmentRegisterBinding
 
 class LoginFragment : Fragment() {
     private var TAG = "LoginFragment"
+
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
 
     private var emailTextField: EditText? = null
     private var passwordTextField: EditText? = null
@@ -24,17 +29,17 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-        setupUi(view)
-        return view
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        setupUi()
+
+        return binding.root
     }
 
-    private fun setupUi(view: View) {
-        emailTextField = view.findViewById(R.id.etLoginFragmentEmail)
-        passwordTextField = view.findViewById(R.id.etLoginFragmentPassword)
-        loginButton = view.findViewById(R.id.btnLoginFragmentLogin)
-        signUpButton = view.findViewById(R.id.btnRegisterFragmentSignIn)
+    private fun setupUi() {
+        emailTextField = binding.etLoginFragmentEmail
+        passwordTextField = binding.etLoginFragmentPassword
+        loginButton = binding.btnLoginFragmentLogin
+        signUpButton = binding.btnLoginFragmentSignUp
 
         loginButton?.setOnClickListener(::onLoginButtonClicked)
         signUpButton?.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_registerFragment))
@@ -49,5 +54,11 @@ class LoginFragment : Fragment() {
         }
 
         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_appActivity)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        _binding = null
     }
 }

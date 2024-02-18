@@ -9,11 +9,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.navigation.Navigation
-import com.example.apartments.R
 import com.example.apartments.common.RequiredValidation
+import com.example.apartments.databinding.FragmentRegisterBinding
 
 class RegisterFragment : Fragment() {
     private var TAG = "RegisterFragment"
+
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding get() = _binding!!
 
     private var nameTextField: EditText? = null
     private var emailTextField: EditText? = null
@@ -24,19 +27,19 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_register, container, false)
-        setupUi(view)
-        return view
+    ): View {
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        setupUi()
+
+        return binding.root
     }
 
-    private fun setupUi(view: View) {
-        nameTextField = view.findViewById(R.id.etRegisterFragmentMain)
-        emailTextField = view.findViewById(R.id.etRegisterFragmentEmail)
-        passwordTextField = view.findViewById(R.id.etRegisterFragmentPassword)
-        registerButton = view.findViewById(R.id.btnRegisterFragmentRegister)
-        signInButton = view.findViewById(R.id.btnRegisterFragmentSignIn)
+    private fun setupUi() {
+        nameTextField = binding.etRegisterFragmentName
+        emailTextField = binding.etRegisterFragmentEmail
+        passwordTextField = binding.etRegisterFragmentPassword
+        registerButton = binding.btnRegisterFragmentRegister
+        signInButton = binding.btnRegisterFragmentSignIn
 
         registerButton?.setOnClickListener(::onRegisterButtonClicked)
         signInButton?.setOnClickListener(::onSignInButtonClicked)
@@ -55,5 +58,11 @@ class RegisterFragment : Fragment() {
 
     private fun onSignInButtonClicked(view: View) {
         Navigation.findNavController(view).popBackStack()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        _binding = null
     }
 }

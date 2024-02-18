@@ -10,6 +10,8 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.R
+import com.example.apartments.databinding.FragmentApartmentsBinding
+import com.example.apartments.databinding.FragmentLoginBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.modules.apartments.adapter.ApartmentsRecyclerAdapter
@@ -17,6 +19,10 @@ import com.example.apartments.modules.apartments.adapter.OnItemClickListener
 
 class ApartmentsFragment : Fragment() {
     private var TAG = "ApartmentsFragment"
+
+    private var _binding: FragmentApartmentsBinding? = null
+    private val binding get() = _binding!!
+
 
     private var apartmentsRecyclerView: RecyclerView? = null
     private var adapter: ApartmentsRecyclerAdapter? = null
@@ -27,9 +33,9 @@ class ApartmentsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_apartments, container, false)
-        progressBar = view.findViewById(R.id.progressBar)
+        _binding = FragmentApartmentsBinding.inflate(inflater, container, false)
+
+        progressBar = binding.progressBar
 
         progressBar?.visibility = View.VISIBLE
 
@@ -42,7 +48,7 @@ class ApartmentsFragment : Fragment() {
             progressBar?.visibility = View.GONE
         }
 
-        apartmentsRecyclerView = view.findViewById(R.id.rvApartmentsFragmentList)
+        apartmentsRecyclerView = binding.rvApartmentsFragmentList
         apartmentsRecyclerView?.setHasFixedSize(true)
         apartmentsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
@@ -54,7 +60,7 @@ class ApartmentsFragment : Fragment() {
 
         apartmentsRecyclerView?.adapter = adapter
 
-        return view
+        return binding.root
     }
 
     override fun onResume() {
@@ -66,5 +72,11 @@ class ApartmentsFragment : Fragment() {
             adapter?.notifyDataSetChanged()
             progressBar?.visibility = View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        _binding = null
     }
 }
