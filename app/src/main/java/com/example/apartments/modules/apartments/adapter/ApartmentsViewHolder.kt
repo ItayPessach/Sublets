@@ -8,14 +8,13 @@ import com.example.apartments.R
 import com.example.apartments.model.apartment.Apartment
 
 class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): RecyclerView.ViewHolder(itemView) {
-    var titleTextView: TextView? = null
-    var subtitleTextView: TextView? = null
+    private var titleTextView: TextView? = null
+    private var descriptionTextView: TextView? = null
     private var image: ImageView? = null
-    //var student: Student? = null
 
     init {
         titleTextView = itemView.findViewById(R.id.tvApartmentsListTitle)
-        subtitleTextView = itemView.findViewById(R.id.tvApartmentsListSubtitle)
+        descriptionTextView = itemView.findViewById(R.id.tvApartmentsListDescription)
         image = itemView.findViewById(R.id.ivApartmentsListImage)
 
         itemView.setOnClickListener {
@@ -28,6 +27,6 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
 
     fun bind(apartment: Apartment?) {
         titleTextView?.text = apartment?.title
-        subtitleTextView?.text = apartment?.subtitle
+        descriptionTextView?.text = apartment?.description
     }
 }

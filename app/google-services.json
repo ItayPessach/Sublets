@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "571214133298",
+    "project_id": "sublets-8e271",
+    "storage_bucket": "sublets-8e271.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:571214133298:android:6de9384cdc120f95ef242b",
+        "android_client_info": {
+          "package_name": "com.example.apartments"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6bTQYni_xVEwFyy9uqp6WhyHs3B9VAco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
