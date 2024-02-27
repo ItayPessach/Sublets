@@ -21,6 +21,7 @@ class RegisterFragment : Fragment() {
     private var nameTextField: EditText? = null
     private var emailTextField: EditText? = null
     private var passwordTextField: EditText? = null
+    private var phoneNumberTextField: EditText? = null
     private var registerButton: Button? = null
     private var signInButton: Button? = null
 
@@ -40,6 +41,7 @@ class RegisterFragment : Fragment() {
         passwordTextField = binding.etRegisterFragmentPassword
         registerButton = binding.btnRegisterFragmentRegister
         signInButton = binding.btnRegisterFragmentSignIn
+        phoneNumberTextField = binding.etRegisterFragmentPhoneNumber
 
         registerButton?.setOnClickListener(::onRegisterButtonClicked)
         signInButton?.setOnClickListener(::onSignInButtonClicked)
@@ -49,8 +51,9 @@ class RegisterFragment : Fragment() {
         val isValidName = RequiredValidation.validateRequiredTextField(nameTextField!!, "name")
         val isValidEmail = RequiredValidation.validateRequiredTextField(emailTextField!!, "email")
         val isValidPassword = RequiredValidation.validateRequiredTextField(passwordTextField!!, "password")
+        val isValidPhoneNumber = RequiredValidation.validateRequiredTextField(phoneNumberTextField!!, "phone number")
 
-        if (isValidName && isValidEmail && isValidPassword) {
+        if (isValidName && isValidEmail && isValidPassword && isValidPhoneNumber) {
             // todo: firebase login user
             Log.d(TAG, "firebase create user")
         }

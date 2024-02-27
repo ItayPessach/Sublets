@@ -3,31 +3,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <item
-        android:id="@+id/apartmentsFragment"
-        android:icon="@drawable/home_outline"
+        android:id="@+id/likedApartmentsFragment"
+        android:icon="@drawable/like_button_nav"
         android:title=""
-        android:visible="true"
-        app:itemBackground="@drawable/selector_bottom_tab"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/addApartmentFragment"
-        android:icon="@drawable/plus_circle_outline"
+        android:icon="@drawable/plus_button_nav"
         android:title=""
+        android:visible="true"
         app:showAsAction="ifRoom"
-        app:itemBackground="@drawable/selector_bottom_tab"
         />
     <item
-        android:id="@+id/myPosts"
-        android:icon="@drawable/home_edit"
+        android:id="@+id/apartmentsFragment"
+        android:icon="@drawable/home_button_nav"
         android:title=""
         app:showAsAction="ifRoom"
-        app:itemBackground="@drawable/selector_bottom_tab"
         />
     <item
-        android:id="@+id/about"
-        android:icon="@drawable/account_circle"
+        android:id="@+id/myApartmentsFragment"
+        android:icon="@drawable/listings_button_nav"
         android:title=""
         app:showAsAction="ifRoom"
-        app:itemBackground="@drawable/selector_bottom_tab"
+        />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/profile_button_nav"
+        android:title=""
+        app:showAsAction="ifRoom"
         />
 </menu>
