@@ -1,6 +1,7 @@
 package com.example.apartments.modules.apartments.adapter
 
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
     private var datesTextView: TextView? = null
 
     private var image: ImageView? = null
+    private var likeButton: ImageButton? = null
 
     init {
         titleTextView = itemView.findViewById(R.id.tvApartmentsListTitle)
@@ -27,11 +29,24 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
         propertyTypeTextView = itemView.findViewById(R.id.tvApartmentsListPropertyType)
         datesTextView = itemView.findViewById(R.id.tvApartmentsListDates)
         image = itemView.findViewById(R.id.ivApartmentsListImage)
+        likeButton = itemView.findViewById(R.id.ibApartmentsListLikeButton)
 
         itemView.setOnClickListener {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 adapter.onClick(position)
+            }
+        }
+
+        likeButton?.setOnClickListener {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                adapter.onLikeClick(position)
+                if (adapter.apartments?.get(position)?.liked == true) {
+                    likeButton!!.setImageResource(R.drawable.like_button)
+                } else {
+                    likeButton!!.setImageResource(R.drawable.liked_like_button)
+                }
             }
         }
     }
@@ -43,9 +58,13 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
         roomsTextView?.text = apartment?.numOfRooms.toString()
         propertyTypeTextView?.text = apartment?.apartmentType.toString()
         datesTextView?.text = "${formatDate(apartment?.startDate ?: 0)} - ${formatDate(apartment?.endDate ?: 0)}"
+
+        if (apartment?.liked == true) {
+            likeButton?.setImageResource(R.drawable.liked_like_button)
+        }
     }
 
-    fun formatDate(milliseconds: Long): String {
+    private fun formatDate(milliseconds: Long): String {
         val formatter = SimpleDateFormat("dd/MM/yyyy")
         return formatter.format(Date(milliseconds))
     }

@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
+    android:clipToPadding="false"
     android:padding="16dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
         android:padding="8dp"
         app:cardCornerRadius="30dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
@@ -63,14 +65,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="28dp"
                 android:fontFamily="@font/outfit_font"
                 android:text="Location here"
                 android:textColor="#FF000000"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/roomsButton"
+                app:layout_constraintEnd_toStartOf="@+id/ivApartmentsListRoomsButton"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/locationButton"
+                app:layout_constraintStart_toEndOf="@+id/ivApartmentsListLocationButton"
                 app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListTitle" />
 
             <TextView
@@ -78,34 +80,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
                 android:fontFamily="@font/outfit_font"
                 android:text="Rooms here"
                 android:textColor="#FF000000"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/propertyButton"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvApartmentsListLocation"
+                app:layout_constraintEnd_toStartOf="@+id/ivApartmentsListPropertyButton"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/roomsButton"
-                app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListTitle" />
+                app:layout_constraintStart_toEndOf="@+id/ivApartmentsListRoomsButton" />
 
             <TextView
                 android:id="@+id/tvApartmentsListPropertyType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/outfit_font"
                 android:text="House"
                 android:textColor="#FF000000"
                 android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvApartmentsListLocation"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/propertyButton"
-                app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListTitle" />
+                app:layout_constraintStart_toEndOf="@+id/ivApartmentsListPropertyButton" />
 
             <ImageButton
-                android:id="@+id/likeButton"
+                android:id="@+id/ibApartmentsListLikeButton"
                 android:layout_width="32dp"
                 android:layout_height="28dp"
                 android:layout_marginTop="16dp"
@@ -113,19 +113,19 @@
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationButton"
+                app:layout_constraintTop_toBottomOf="@+id/ivApartmentsListLocationButton"
                 app:srcCompat="@drawable/like_button" />
 
             <ImageView
-                android:id="@+id/calendarButton"
+                android:id="@+id/ivApartmentsListCalendarButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationButton"
+                app:layout_constraintTop_toBottomOf="@+id/ivApartmentsListLocationButton"
                 app:srcCompat="@drawable/calendar_icon" />
 
             <TextView
@@ -133,16 +133,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="@font/outfit_font"
                 android:text="Dates here"
                 android:textColor="#FF000000"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/calendarButton"
-                app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListLocation" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivApartmentsListCalendarButton" />
 
             <ImageView
-                android:id="@+id/locationButton"
+                android:id="@+id/ivApartmentsListLocationButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
@@ -154,7 +154,7 @@
                 app:srcCompat="@drawable/location_icon" />
 
             <ImageView
-                android:id="@+id/roomsButton"
+                android:id="@+id/ivApartmentsListRoomsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="24dp"
@@ -166,7 +166,7 @@
                 app:srcCompat="@drawable/rooms_icon" />
 
             <ImageView
-                android:id="@+id/propertyButton"
+                android:id="@+id/ivApartmentsListPropertyButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="24dp"
