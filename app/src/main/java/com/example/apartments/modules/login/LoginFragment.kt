@@ -8,22 +8,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.apartments.R
+import com.example.apartments.base.MyApplication
 import com.example.apartments.common.RequiredValidation
 import com.example.apartments.databinding.FragmentLoginBinding
-import com.example.apartments.databinding.FragmentRegisterBinding
+import com.example.apartments.model.auth.AuthModel
+import com.example.apartments.modules.register.RegisterFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
-    private var TAG = "LoginFragment"
+    companion object {
+        const val TAG = "LoginFragment"
+    }
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private var emailTextField: EditText? = null
-    private var passwordTextField: EditText? = null
-    private var loginButton: Button? = null
-    private var signUpButton: Button? = null
+    private lateinit var emailTextField: EditText
+    private lateinit var passwordTextField: EditText
+    private lateinit var loginButton: Button
+    private lateinit var signUpButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,19 +50,41 @@ class LoginFragment : Fragment() {
         loginButton = binding.btnLoginFragmentLogin
         signUpButton = binding.btnLoginFragmentSignUp
 
-        loginButton?.setOnClickListener(::onLoginButtonClicked)
-        signUpButton?.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_registerFragment))
+        loginButton.setOnClickListener(::onLoginButtonClicked)
+        signUpButton.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_loginFragment_to_registerFragment))
     }
 
     private fun onLoginButtonClicked(view: View) {
-        val isValidEmail = RequiredValidation.validateRequiredTextField(emailTextField!!, "email")
-        val isValidPassword = RequiredValidation.validateRequiredTextField(passwordTextField!!, "password")
+        val isValidEmail = RequiredValidation.validateRequiredTextField(emailTextField, "email")
+        val isValidPassword = RequiredValidation.validateRequiredTextField(passwordTextField, "password")
         if (isValidEmail && isValidPassword) {
-            // todo: firebase login user
             Log.d(TAG, "firebase login")
-        }
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val authResult = AuthModel.instance.signIn(emailTextField.text.toString(), passwordTextField.text.toString())
 
-        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_appActivity)
+                    withContext(Dispatchers.Main) {
+                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_appActivity)
+                    }
+                } catch (e: Exception) {
+                    Log.e(RegisterFragment.TAG, "An unexpected error occurred: ${e.message}")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            MyApplication.Globals.appContext,
+                            "some of the login details are incorrect",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
+            }
+        } else {
+            Log.e(TAG, "some of the login details are missing")
+            Toast.makeText(
+                MyApplication.Globals.appContext,
+                "missing some login details",
+                Toast.LENGTH_SHORT,
+            ).show()
+        }
     }
 
     override fun onDestroy() {
