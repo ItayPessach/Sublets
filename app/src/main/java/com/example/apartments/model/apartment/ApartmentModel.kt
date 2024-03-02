@@ -1,11 +1,9 @@
 package com.example.apartments.model.apartment
 
-import android.os.Looper
 import android.util.Log
-import androidx.core.os.HandlerCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.apartments.common.FirebaseModel
+import com.example.apartments.common.FireStoreModel
 import com.example.apartments.dao.AppLocalDatabase
 import com.google.firebase.Timestamp
 import java.util.concurrent.Executors
@@ -17,9 +15,8 @@ class ApartmentModel private constructor() {
     }
 
     private val roomDB = AppLocalDatabase.db
-    private val firebaseDB = FirebaseModel.instance.db
+    private val firebaseDB = FireStoreModel.instance.db
     private var executor = Executors.newSingleThreadExecutor()
-    private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
     val apartmentsListLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
 
     companion object {
