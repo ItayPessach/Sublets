@@ -67,6 +67,7 @@ class ApartmentModel private constructor() {
                    // get the user context, get the user liked sublets and check if the current sublet's id is in it.
                    // if it's in it then set the liked attribute to true
                    apartment.liked = false // TODO set the liked to the correct value
+                   // TODO also add if the apartment is the user's apartment and add the attribute isMine to the apartment
                    roomDB.apartmentDao().insert(apartment)
 
                    apartment.lastUpdated?.let {
@@ -82,10 +83,9 @@ class ApartmentModel private constructor() {
        }
    }
 
-    fun addApartment(apartment: Apartment, callback: () -> Unit) {
+    suspend fun addApartment(apartment: Apartment) {
         firebaseDB.collection(APARTMENTS_COLLECTION_PATH).add(apartment.json).addOnSuccessListener {
             refreshAllApartments()
-            callback()
         }
     }
 

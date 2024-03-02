@@ -3,6 +3,7 @@ package com.example.apartments.modules.addApartment
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -16,17 +17,25 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.apartments.R
+import com.example.apartments.base.MyApplication
+import com.example.apartments.common.FirebaseStorageModel
 import com.example.apartments.common.RequiredValidation
 import com.example.apartments.databinding.FragmentAddApartmentBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.model.apartment.ApartmentType
-import java.text.SimpleDateFormat
+import com.example.apartments.model.auth.AuthModel
+import com.example.apartments.modules.register.RegisterFragment
+import com.example.apartments.utils.dateUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
-import java.util.Date
 
 class AddApartmentFragment : Fragment() {
     private var TAG = "AddApartmentFragment"
@@ -34,14 +43,14 @@ class AddApartmentFragment : Fragment() {
     private val types = arrayOf("Apartment", "House", "Villa", "Penthouse")
     private var startDate: Calendar = Calendar.getInstance()
     private var endDate: Calendar = Calendar.getInstance()
-    private var apartmentUri: Any? = null
+    private var imageUri: Uri? = null
 
-    private lateinit var titleWidget: EditText
-    private lateinit var descriptionWidget: EditText
-    private lateinit var roomsWidget: EditText
-    private lateinit var priceWidget: EditText
-    private lateinit var locationWidget: Spinner
-    private lateinit var typeWidget: Spinner
+    private lateinit var titleTextField: EditText
+    private lateinit var descriptionTextField: EditText
+    private lateinit var roomsTextField: EditText
+    private lateinit var priceTextField: EditText
+    private lateinit var locationSelectField: Spinner
+    private lateinit var typeSelectField: Spinner
     private lateinit var datesTextView: TextView
     private lateinit var datesBtn: ImageButton
     private lateinit var addImageBtn: ImageButton
@@ -55,7 +64,7 @@ class AddApartmentFragment : Fragment() {
             val selectedImageUri = result.data?.data
 
             addImageBtn.setImageURI(selectedImageUri)
-            apartmentUri = selectedImageUri
+            imageUri = selectedImageUri
         }
     }
 
@@ -70,12 +79,12 @@ class AddApartmentFragment : Fragment() {
     }
 
     private fun setupUi() {
-        titleWidget = binding.etUploadApartmentTitle
-        descriptionWidget = binding.etUploadApartmentDescription
-        roomsWidget = binding.etUploadApartmentRooms
-        priceWidget = binding.etUploadApartmentPrice
-        locationWidget = binding.spUploadApartmentLocation
-        typeWidget = binding.spUploadApartmentType
+        titleTextField = binding.etUploadApartmentTitle
+        descriptionTextField = binding.etUploadApartmentDescription
+        roomsTextField = binding.etUploadApartmentRooms
+        priceTextField = binding.etUploadApartmentPrice
+        locationSelectField = binding.spUploadApartmentLocation
+        typeSelectField = binding.spUploadApartmentType
         datesTextView = binding.tvUploadApartmentDates
         datesBtn = binding.ibUploadApartmentDates
         addImageBtn = binding.ibUploadApartmentAddPhotoButton
@@ -83,11 +92,11 @@ class AddApartmentFragment : Fragment() {
 
         val locationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, locations)
         locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        locationWidget.adapter = locationAdapter
+        locationSelectField.adapter = locationAdapter
 
         val typeAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, types)
         typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
-        typeWidget.adapter = typeAdapter
+        typeSelectField.adapter = typeAdapter
 
         datesBtn.setOnClickListener(::onDatesButtonClicked)
         addImageBtn.setOnClickListener(::onAddImageButtonClicked)
@@ -116,7 +125,7 @@ class AddApartmentFragment : Fragment() {
                 if (anotherDatePicker) {
                     setupDatePicker(view, anotherDate!!)
                 } else {
-                    datesTextView.text = "${formatDate(startDate.timeInMillis)} - ${formatDate(endDate.timeInMillis)}"
+                    datesTextView.text = "${dateUtils.formatDate(startDate.timeInMillis)} - ${dateUtils.formatDate(endDate.timeInMillis)}"
                 }
             },
             year,
@@ -128,32 +137,41 @@ class AddApartmentFragment : Fragment() {
     }
 
     private fun onUploadApartmentButtonClicked(view: View) {
-        val isValidTitle = RequiredValidation.validateRequiredTextField(titleWidget, "title")
-        val isValidDescription = RequiredValidation.validateRequiredTextField(descriptionWidget, "description")
-        val isValidRooms = RequiredValidation.validateRequiredTextField(roomsWidget, "rooms")
-        val isValidPrice = RequiredValidation.validateRequiredTextField(priceWidget, "price")
+        val isValidTitle = RequiredValidation.validateRequiredTextField(titleTextField, "title")
+        val isValidDescription = RequiredValidation.validateRequiredTextField(descriptionTextField, "description")
+        val isValidRooms = RequiredValidation.validateRequiredTextField(roomsTextField, "rooms")
+        val isValidPrice = RequiredValidation.validateRequiredTextField(priceTextField, "price")
 
-        if (isValidTitle && isValidDescription && isValidRooms && isValidPrice) { // TODO add location, type and dates validation and actually validate all...
-            Log.d(TAG, "firebase create apartment document")
-            val title = titleWidget.text.toString()
-            val description = descriptionWidget.text.toString()
-            val numOfRooms = roomsWidget.text.toString().toInt()
-            val price = priceWidget.text.toString().toInt()
-            val type = typeWidget.selectedItem.toString()
-            val location = locationWidget.selectedItem.toString()
-            val dates = datesTextView.text.toString() // get the timestamps
-//            val apartmentUrl = FirebaseStorageModel.instance.addImageToFirebaseStorage(apartmentUri!!, FirebaseStorageModel.APARTMENTS_PATH) // todo add
+        if (isValidTitle && isValidDescription && isValidRooms && isValidPrice) { // TODO validate all...
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    Log.d(TAG, "firebase create apartment document")
+                    val title = titleTextField.text.toString()
+                    val userId = AuthModel.instance.getUserId()!!
+                    val description = descriptionTextField.text.toString()
+                    val numOfRooms = roomsTextField.text.toString().toInt()
+                    val price = priceTextField.text.toString().toInt()
+                    val type = typeSelectField.selectedItem.toString()
+                    val location = locationSelectField.selectedItem.toString()
+                    val imageUrl = FirebaseStorageModel.instance.addImageToFirebaseStorage(imageUri!!, FirebaseStorageModel.APARTMENTS_PATH)
 
-            val apartment = Apartment("", title, description, location, ApartmentType.valueOf(type), numOfRooms) // TODO should also insert price, userId, dates and image uri
+                    val apartment = Apartment("", userId, title, price, description, location, ApartmentType.valueOf(type), numOfRooms, startDate.timeInMillis, endDate.timeInMillis, imageUrl)
 
-            ApartmentModel.instance.addApartment(apartment) {
-                Navigation.findNavController(view).popBackStack(R.id.apartmentsFragment, false)
+                    ApartmentModel.instance.addApartment(apartment)
+                    withContext(Dispatchers.Main) {
+                        Navigation.findNavController(view).popBackStack(R.id.apartmentsFragment, false)
+                    }
+                } catch (e: Exception) {
+                    Log.e(RegisterFragment.TAG, "An unexpected error occurred: ${e.message}")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            MyApplication.Globals.appContext,
+                            "failed to upload apartment",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                    }
+                }
             }
         }
-    }
-
-    private fun formatDate(milliseconds: Long): String {
-        val formatter = SimpleDateFormat("dd/MM/yyyy")
-        return formatter.format(Date(milliseconds))
     }
 }

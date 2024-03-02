@@ -13,7 +13,7 @@ class FirebaseStorageModel {
     companion object {
         val instance: FirebaseStorageModel = FirebaseStorageModel()
         const val USERS_PATH = "users"
-        const val POSTS_PATH = "posts"
+        const val APARTMENTS_PATH = "apartments"
     }
 
     suspend fun addImageToFirebaseStorage(uri: Uri, path: String): String {

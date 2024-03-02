@@ -29,4 +29,6 @@ class AuthModel {
     }
 
     fun getUser() = auth.currentUser
+
+    fun getUserId() = auth.currentUser?.uid
 }

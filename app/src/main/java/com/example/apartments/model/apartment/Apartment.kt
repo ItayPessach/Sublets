@@ -8,14 +8,16 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 
 enum class ApartmentType(type: String) {
-    Building("building"),
-    Private("private"),
+    Apartment("Apartment"),
+    House("House"),
+    Villa("Villa"),
+    Penthouse("Penthouse"),
 }
 
 @Entity
 data class Apartment(
-    // add user id
     @PrimaryKey val id: String,
+    val userId: String,
     val title: String,
     val pricePerNight: Int,
     val description: String,
@@ -24,6 +26,7 @@ data class Apartment(
     val numOfRooms: Int,
     val startDate: Long,
     val endDate: Long,
+    val imageUrl: String,
     var liked: Boolean = false,
     var lastUpdated: Long? = null
 ) {
@@ -43,6 +46,7 @@ data class Apartment(
             }
 
         private const val TITLE_KEY = "title"
+        private const val USER_ID = "userId"
         private const val PRICE_PER_NIGHT_KEY = "pricePerNight"
         private const val DESCRIPTION_KEY = "description"
         private const val CITY_KEY = "city"
@@ -50,22 +54,25 @@ data class Apartment(
         private const val NUM_OF_ROOMS_KEY = "numOfRooms"
         private const val START_DATE_KEY = "startDate"
         private const val END_DATE_KEY = "endDate"
+        private const val IMAGE_URL_KEY = "imageUrl"
         private const val LIKED_KEY = "liked"
 
         private const val LOCAL_LAST_UPDATED = "get_last_updated"
         const val LAST_UPDATED = "lastUpdated"
         fun fromJson(json: Map<String, Any>, id: String): Apartment {
             val title = json[TITLE_KEY] as? String ?: ""
+            val userId = json[USER_ID] as? String ?: ""
             val pricePerNight = (json[PRICE_PER_NIGHT_KEY] as? Long)?.toInt() ?: 0
             val description = json[DESCRIPTION_KEY] as? String ?: ""
             val city = json[CITY_KEY] as? String ?: ""
-            val apartmentType = json[APARTMENT_TYPE_KEY] as? ApartmentType ?: ApartmentType.Private
+            val apartmentType = json[APARTMENT_TYPE_KEY] as? ApartmentType ?: ApartmentType.House
             val numOfRooms = (json[NUM_OF_ROOMS_KEY] as? Long)?.toInt() ?: 0
-            val startDate = (json[START_DATE_KEY] as? Timestamp)?.toDate()?.time ?: 0
-            val endDate = (json[END_DATE_KEY] as? Timestamp)?.toDate()?.time ?: 0
+            val startDate = json[START_DATE_KEY] as? Long ?: 0
+            val endDate = json[END_DATE_KEY] as? Long ?: 0
+            val imageUrl = json[IMAGE_URL_KEY] as? String ?: ""
             val liked = json[LIKED_KEY] as? Boolean ?: false
 
-            val apartment = Apartment(id, title, pricePerNight, description, city, apartmentType, numOfRooms, startDate, endDate, liked)
+            val apartment = Apartment(id, userId, title, pricePerNight, description, city, apartmentType, numOfRooms, startDate, endDate, imageUrl, liked)
 
             val timestamp: Timestamp? = json[LAST_UPDATED] as? Timestamp
             timestamp?.let {
@@ -78,6 +85,7 @@ data class Apartment(
     val json: Map<String, Any>
         get() = hashMapOf(
                 TITLE_KEY to title,
+                USER_ID to userId,
                 PRICE_PER_NIGHT_KEY to pricePerNight,
                 DESCRIPTION_KEY to description,
                 CITY_KEY to city,
@@ -85,6 +93,7 @@ data class Apartment(
                 NUM_OF_ROOMS_KEY to numOfRooms,
                 START_DATE_KEY to startDate,
                 END_DATE_KEY to endDate,
+                IMAGE_URL_KEY to imageUrl,
                 LIKED_KEY to liked,
                 LAST_UPDATED to FieldValue.serverTimestamp()
             )
