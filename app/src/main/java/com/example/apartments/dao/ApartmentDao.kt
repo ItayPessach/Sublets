@@ -21,4 +21,7 @@ interface ApartmentDao {
 
     @Query("SELECT * FROM Apartment WHERE id = :id")
     fun getApartmentById(id: String): LiveData<Apartment>
+
+    @Query("UPDATE Apartment SET liked = :liked WHERE id = :id")
+    fun setApartmentLiked(id: String, liked: Boolean)
 }
