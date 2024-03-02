@@ -66,6 +66,10 @@ class ApartmentModel private constructor() {
            executor.execute {
                var time = lastUpdated
                for (apartment in apartments) {
+                   // TODO check if the apartment is liked by the user and add liked boolean attribute to the apartment
+                   // get the user context, get the user liked sublets and check if the current sublet's id is in it.
+                   // if it's in it then set the liked attribute to true
+                   apartment.liked = false // TODO set the liked to the correct value
                    roomDB.apartmentDao().insert(apartment)
 
                    apartment.lastUpdated?.let {
@@ -85,6 +89,22 @@ class ApartmentModel private constructor() {
         firebaseDB.collection(APARTMENTS_COLLECTION_PATH).add(apartment.json).addOnSuccessListener {
             refreshAllApartments()
             callback()
+        }
+    }
+
+    fun addLikedApartment(apartmentId: String) {
+        // addLikedApartmentToFirestore(apartmentId) // TODO add liked apartment to user document in the liked array
+
+        executor.execute {
+            roomDB.apartmentDao().setApartmentLiked(apartmentId, true)
+        }
+    }
+
+    fun removeLikedApartment(apartmentId: String) {
+        // removeLikedApartmentFromFirestore(apartmentId) // TODO remove liked apartment from user document in the liked array
+
+        executor.execute {
+            roomDB.apartmentDao().setApartmentLiked(apartmentId, false)
         }
     }
 }

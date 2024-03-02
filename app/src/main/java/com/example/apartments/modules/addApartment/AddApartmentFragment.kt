@@ -1,7 +1,5 @@
 package com.example.apartments.modules.addApartment
 
-import android.net.http.HttpException
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.annotation.RequiresExtension
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.apartments.R
 import com.example.apartments.common.RequiredValidation
@@ -19,12 +15,6 @@ import com.example.apartments.databinding.FragmentAddApartmentBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.model.apartment.ApartmentType
-import com.example.apartments.retrofit.MovieSearchResult
-import com.example.apartments.retrofit.MoviesSingelton
-import com.example.apartments.retrofit.RetrofitInstance
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AddApartmentFragment : Fragment() {
     private var TAG = "AddApartmentFragment"
@@ -66,7 +56,7 @@ class AddApartmentFragment : Fragment() {
             val description = descriptionTextField!!.text.toString()
             val numOfRooms = numOfRoomsTextField!!.text.toString().toInt()
 
-            val apartment = Apartment("", title, description, "", ApartmentType.Private, numOfRooms)
+            val apartment = Apartment("", title, 0, description, "", ApartmentType.Private, numOfRooms, 0, 0)
 
             ApartmentModel.instance.addApartment(apartment) {
                 Navigation.findNavController(view).popBackStack(R.id.apartmentsFragment, false)
