@@ -75,14 +75,4 @@ class ApartmentsFragment : Fragment() {
         ApartmentModel.instance.refreshAllApartments()
         progressBar?.visibility = View.GONE
     }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        _binding = null
-    }
 }

@@ -3,6 +3,8 @@ package com.example.apartments
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.navigation.Navigation
+import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.retrofit.MovieSearchResult
 import com.example.apartments.retrofit.MoviesSingelton
 import com.example.apartments.retrofit.RetrofitInstance
@@ -15,6 +17,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        getMoviesFromRemoteApi()
+    }
+
+    private fun getMoviesFromRemoteApi() {
         val call = RetrofitInstance.moviesApi.getMovieByTitle("Guardians of the Galaxy Vol. 2")
 
         call.enqueue(object: Callback<MovieSearchResult> {

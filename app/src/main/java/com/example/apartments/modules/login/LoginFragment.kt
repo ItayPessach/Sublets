@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.example.apartments.R
 import com.example.apartments.base.MyApplication
 import com.example.apartments.common.RequiredValidation
@@ -39,9 +40,17 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        checkIfUserAuthenticated()
+
         setupUi()
 
         return binding.root
+    }
+
+    private fun checkIfUserAuthenticated() {
+        if (AuthModel.instance.getUser() != null) {
+            findNavController().navigate(R.id.action_loginFragment_to_appActivity)
+        }
     }
 
     private fun setupUi() {
@@ -58,7 +67,6 @@ class LoginFragment : Fragment() {
         val isValidEmail = RequiredValidation.validateRequiredTextField(emailTextField, "email")
         val isValidPassword = RequiredValidation.validateRequiredTextField(passwordTextField, "password")
         if (isValidEmail && isValidPassword) {
-            Log.d(TAG, "firebase login")
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val authResult = AuthModel.instance.signIn(emailTextField.text.toString(), passwordTextField.text.toString())

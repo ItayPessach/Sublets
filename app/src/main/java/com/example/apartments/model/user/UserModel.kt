@@ -7,9 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.apartments.common.FireStoreModel
 import com.example.apartments.dao.AppLocalDatabase
-import com.example.apartments.model.user.User
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 import java.util.concurrent.Executors
 
 class UserModel private constructor() {
@@ -92,5 +93,15 @@ class UserModel private constructor() {
 
     suspend fun addUser(user: User) {
         firebaseDB.collection(USERS_COLLECTION_PATH).document(user.id).set(user.json).await()
+    }
+
+    suspend fun fetchUser(userId: String): User? {
+        return try {
+            val documentSnapshot = firebaseDB.collection(USERS_COLLECTION_PATH).document(userId).get().await()
+            return User.fromJson(documentSnapshot.data!!, userId)
+         } catch (e: Exception) {
+            Log.e("TAG", "An unexpected error occurred: ${e.message}")
+            null
+         }
     }
 }
