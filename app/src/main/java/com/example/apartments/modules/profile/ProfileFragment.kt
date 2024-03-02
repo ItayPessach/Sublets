@@ -1,7 +1,9 @@
 package com.example.apartments.modules.profile
 
 import android.content.Intent
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,14 +13,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
 import com.example.apartments.MainActivity
+import com.example.apartments.R
 import com.example.apartments.databinding.FragmentProfileBinding
 import com.example.apartments.model.auth.AuthModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
+import java.lang.Exception
 
 class ProfileFragment : Fragment() {
     companion object {
@@ -34,6 +38,8 @@ class ProfileFragment : Fragment() {
     private lateinit var phoneNumberTextField: EditText
     private lateinit var editButton: Button
     private lateinit var logoutButton: FloatingActionButton
+    private lateinit var progressBar: ProgressBar
+    private lateinit var layout: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +54,8 @@ class ProfileFragment : Fragment() {
         viewModel.getUser(AuthModel.instance.getUser()!!.uid)
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
+            progressBar.visibility = View.VISIBLE
+
             nameTextField.setText(user.name)
             phoneNumberTextField.setText(user.phoneNumber)
 
@@ -56,8 +64,23 @@ class ProfileFragment : Fragment() {
             // Load image into ImageView using Picasso
             Picasso.get()
                 .load(user.avatarUrl)
-                .fit()
-                .into(avatarImageView)
+                .placeholder(R.drawable.account_circle)
+                .into(object : Target {
+                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                        progressBar.visibility = View.GONE
+                        layout.visibility = View.VISIBLE
+                        val resizedBitmap = Bitmap.createScaledBitmap(bitmap!!, 800, 680, false)
+                        avatarImageView.setImageBitmap(resizedBitmap)
+                    }
+
+                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                        Log.e(TAG, "erorr")
+                    }
+
+                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                        Log.d(TAG, "onPrepareLoad")
+                    }
+                })
         }
 
         return binding.root
@@ -70,11 +93,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupUi() {
+        layout = binding.clProfileFragment
         avatarImageView = binding.ivProfileFragmentAvatar
         nameTextField = binding.etProfileFragmentName
         phoneNumberTextField = binding.etProfileFragmentPhoneNumber
         editButton = binding.btnProfileFragmentEdit
         logoutButton = binding.fabProfileFragmentLogout
+        progressBar = binding.progressBarProfileFragment
 
         logoutButton.setOnClickListener(::onLogoutButtonClicked)
     }
