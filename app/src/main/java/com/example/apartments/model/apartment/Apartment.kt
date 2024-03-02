@@ -14,6 +14,7 @@ enum class ApartmentType(type: String) {
 
 @Entity
 data class Apartment(
+    // add user id
     @PrimaryKey val id: String,
     val title: String,
     val pricePerNight: Int,
