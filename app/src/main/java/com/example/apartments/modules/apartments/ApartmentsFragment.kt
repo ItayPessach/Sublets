@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.databinding.FragmentApartmentsBinding
 import com.example.apartments.model.apartment.ApartmentModel
+import com.example.apartments.model.user.UserModel
 import com.example.apartments.modules.apartments.adapter.ApartmentsRecyclerAdapter
 import com.example.apartments.modules.apartments.adapter.OnItemClickListener
 import kotlinx.coroutines.launch
@@ -34,6 +35,10 @@ class ApartmentsFragment : Fragment() {
     ): View? {
         _binding = FragmentApartmentsBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[ApartmentsViewModel::class.java]
+
+        lifecycleScope.launch {
+            UserModel.instance.getMe()
+        }
 
         progressBar = binding.progressBar
 

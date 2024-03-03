@@ -1,20 +1,32 @@
 package com.example.apartments.modules.profile
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.apartments.common.FirebaseStorageModel
+import com.example.apartments.model.user.UpdateUserInput
 import com.example.apartments.model.user.User
 import com.example.apartments.model.user.UserModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProfileViewModel: ViewModel() {
     var user: MutableLiveData<User> = MutableLiveData<User>()
 
-    fun getUser(userId: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-                val fetchedUser = UserModel.instance.fetchUser(userId)
-                user.postValue(fetchedUser!!)
+    fun getCurrentUser() {
+        user.value = UserModel.instance.currentUser
+    }
+
+    fun updateCurrentUser(updateUserInput: UpdateUserInput, avatarUri: Uri?) {
+        viewModelScope.launch {
+
+            if (avatarUri != null) {
+                updateUserInput.avatarUrl = FirebaseStorageModel.instance.addImageToFirebaseStorage(avatarUri, FirebaseStorageModel.USERS_PATH)
             }
+
+            UserModel.instance.updateMe(updateUserInput)
+            user.postValue(UserModel.instance.currentUser)
+
         }
+    }
 }

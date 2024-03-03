@@ -5,13 +5,17 @@
     android:id="@+id/profileFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context=".modules.profile.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clProfileFragment"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
         android:visibility="gone"
-        android:layout_height="match_parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabProfileFragmentLogout"
@@ -20,16 +24,19 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:clickable="true"
+            android:contentDescription="fab_logout_button"
             android:src="@drawable/logout_button"
             app:backgroundTint="@color/custom_orange"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/ivProfileFragmentAvatar"
+        <ImageButton
+            android:id="@+id/ivbProfileFragmentAvatar"
             android:layout_width="300dp"
             android:layout_height="250dp"
             android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="avatar_image_button"
             android:scaleType="centerInside"
             android:src="@drawable/avatar"
             app:layout_constraintEnd_toEndOf="parent"
@@ -41,14 +48,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/outfit"
             android:text="Name"
             android:textColor="@color/custom_orange"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivProfileFragmentAvatar" />
+            app:layout_constraintTop_toBottomOf="@+id/ivbProfileFragmentAvatar" />
 
         <EditText
             android:id="@+id/etProfileFragmentName"
@@ -117,6 +124,7 @@
             app:layout_constraintTop_toBottomOf="@+id/etProfileFragmentPhoneNumber" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ProgressBar
         android:id="@+id/progressBarProfileFragment"
         style="?android:attr/progressBarStyle"
@@ -130,7 +138,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        />
+        app:layout_constraintVertical_bias="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
