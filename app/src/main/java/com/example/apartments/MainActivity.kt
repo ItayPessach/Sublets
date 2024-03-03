@@ -3,10 +3,8 @@ package com.example.apartments
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.navigation.Navigation
-import com.example.apartments.model.auth.AuthModel
-import com.example.apartments.retrofit.MovieSearchResult
-import com.example.apartments.retrofit.MoviesSingelton
+import com.example.apartments.retrofit.RegionSearchResult
+import com.example.apartments.retrofit.RegionsSingelton
 import com.example.apartments.retrofit.RetrofitInstance
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,27 +15,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        getMoviesFromRemoteApi()
+        getRegionsFromRemoteApi()
     }
 
-    private fun getMoviesFromRemoteApi() {
-        val call = RetrofitInstance.moviesApi.getMovieByTitle("Guardians of the Galaxy Vol. 2")
+    private fun getRegionsFromRemoteApi() {
+        val call = RetrofitInstance.regionsApi.getRegions()
 
-        call.enqueue(object: Callback<MovieSearchResult> {
+        call.enqueue(object: Callback<RegionSearchResult> {
             override fun onResponse(
-                call: Call<MovieSearchResult>,
-                response: Response<MovieSearchResult>
+                call: Call<RegionSearchResult>,
+                response: Response<RegionSearchResult>
             ) {
                 if (response.isSuccessful) {
-                    MoviesSingelton.movieSearchResult = response.body()
-                    Log.i("TAG", MoviesSingelton.movieSearchResult.toString())
+                    RegionsSingelton.regionsSearchResult = response.body()!!.result.records.map { it -> it.regionName }
+
+                    Log.i("TAG", RegionsSingelton.regionsSearchResult.toString())
                 } else {
                     Log.e("TAG", response.errorBody().toString())
                 }
             }
 
-            override fun onFailure(call: Call<MovieSearchResult>, t: Throwable) {
-                t.printStackTrace()
+            override fun onFailure(call: Call<RegionSearchResult>, t: Throwable) {
+                Log.e("TAG", "$t.printStackTrace()")
             }
 
         })

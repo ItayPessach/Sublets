@@ -31,6 +31,7 @@ import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.model.apartment.ApartmentType
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.modules.register.RegisterFragment
+import com.example.apartments.retrofit.RegionsSingelton
 import com.example.apartments.utils.dateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,7 +40,6 @@ import java.util.Calendar
 
 class AddApartmentFragment : Fragment() {
     private var TAG = "AddApartmentFragment"
-    private val locations = arrayOf("Tel Aviv - Yafo", "Haifa") // TODO get from external source
     private val types = arrayOf("Apartment", "House", "Villa", "Penthouse")
     private var startDate: Calendar = Calendar.getInstance()
     private var endDate: Calendar = Calendar.getInstance()
@@ -90,7 +90,7 @@ class AddApartmentFragment : Fragment() {
         addImageBtn = binding.ibUploadApartmentAddPhotoButton
         uploadApartmentBtn = binding.btnUploadApartmentUpload
 
-        val locationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, locations)
+        val locationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, RegionsSingelton.regionsSearchResult!!.toList())
         locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         locationSelectField.adapter = locationAdapter
 
