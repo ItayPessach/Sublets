@@ -143,7 +143,7 @@ class AddApartmentFragment : Fragment() {
         val isValidPrice = RequiredValidation.validateRequiredTextField(priceTextField, "price")
 
         if (isValidTitle && isValidDescription && isValidRooms && isValidPrice) { // TODO validate all...
-            lifecycleScope.launch(Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 try {
                     Log.d(TAG, "firebase create apartment document")
                     val title = titleTextField.text.toString()
@@ -158,18 +158,14 @@ class AddApartmentFragment : Fragment() {
                     val apartment = Apartment("", userId, title, price, description, location, ApartmentType.valueOf(type), numOfRooms, startDate.timeInMillis, endDate.timeInMillis, imageUrl)
 
                     ApartmentModel.instance.addApartment(apartment)
-                    withContext(Dispatchers.Main) {
-                        Navigation.findNavController(view).popBackStack(R.id.apartmentsFragment, false)
-                    }
+                    Navigation.findNavController(view).popBackStack(R.id.apartmentsFragment, false)
                 } catch (e: Exception) {
                     Log.e(RegisterFragment.TAG, "An unexpected error occurred: ${e.message}")
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            MyApplication.Globals.appContext,
-                            "failed to upload apartment",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-                    }
+                    Toast.makeText(
+                        MyApplication.Globals.appContext,
+                        "failed to upload apartment",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 }
             }
         }

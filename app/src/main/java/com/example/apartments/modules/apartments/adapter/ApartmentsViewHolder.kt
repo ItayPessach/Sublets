@@ -7,9 +7,11 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.R
 import com.example.apartments.model.apartment.Apartment
+import com.example.apartments.modules.apartments.ApartmentsViewModel
 import com.example.apartments.utils.dateUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
@@ -46,7 +48,7 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
             }
         }
 
-        likeButton?.setOnClickListener {
+        likeButton.setOnClickListener {
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 adapter.onLikeClick(position)

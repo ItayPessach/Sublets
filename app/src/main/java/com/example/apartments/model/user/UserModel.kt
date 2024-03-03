@@ -7,11 +7,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.apartments.common.FireStoreModel
 import com.example.apartments.dao.AppLocalDatabase
+import com.example.apartments.model.auth.AuthModel
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.util.concurrent.Executors
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class UserModel private constructor() {
     enum class LoadingState {
@@ -103,5 +110,41 @@ class UserModel private constructor() {
             Log.e("TAG", "An unexpected error occurred: ${e.message}")
             null
          }
+    }
+
+    suspend fun addLikedApartment(apartmentId: String) {
+        suspendCoroutine<Unit> { continuation ->
+            firebaseDB.collection(USERS_COLLECTION_PATH)
+                .document(AuthModel.instance.getUserId()!!)
+                .update(User.LIKED_APARTMENTS_KEY, FieldValue.arrayUnion(apartmentId))
+                .addOnSuccessListener {
+                    continuation.resume(Unit)
+                }
+                .addOnFailureListener { exception ->
+                    continuation.resumeWithException(exception)
+                }
+        }
+
+        withContext(Dispatchers.IO) {
+            roomDB.apartmentDao().setApartmentLiked(apartmentId, true)
+        }
+    }
+
+    suspend fun removeLikedApartment(apartmentId: String) {
+        suspendCoroutine<Unit> { continuation ->
+            firebaseDB.collection(USERS_COLLECTION_PATH)
+                .document(AuthModel.instance.getUserId()!!)
+                .update(User.LIKED_APARTMENTS_KEY, FieldValue.arrayRemove(apartmentId))
+                .addOnSuccessListener {
+                    continuation.resume(Unit)
+                }
+                .addOnFailureListener { exception ->
+                    continuation.resumeWithException(exception)
+                }
+        }
+
+        withContext(Dispatchers.IO) {
+            roomDB.apartmentDao().setApartmentLiked(apartmentId, false)
+        }
     }
 }

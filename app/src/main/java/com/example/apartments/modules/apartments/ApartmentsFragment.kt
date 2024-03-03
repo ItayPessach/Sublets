@@ -8,12 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.databinding.FragmentApartmentsBinding
 import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.modules.apartments.adapter.ApartmentsRecyclerAdapter
 import com.example.apartments.modules.apartments.adapter.OnItemClickListener
+import kotlinx.coroutines.launch
 
 class ApartmentsFragment : Fragment() {
     private var TAG = "ApartmentsFragment"
@@ -36,35 +38,35 @@ class ApartmentsFragment : Fragment() {
         progressBar = binding.progressBar
 
         progressBar?.visibility = View.VISIBLE
+        viewModel.getAllApartments {
+            apartmentsRecyclerView = binding.rvApartmentsFragmentList
+            apartmentsRecyclerView?.setHasFixedSize(true)
+            apartmentsRecyclerView?.layoutManager = LinearLayoutManager(context)
+            adapter = ApartmentsRecyclerAdapter(viewModel.apartments?.value, viewModel)
 
-        viewModel.apartments = ApartmentModel.instance.getAllApartments()
-
-        apartmentsRecyclerView = binding.rvApartmentsFragmentList
-        apartmentsRecyclerView?.setHasFixedSize(true)
-        apartmentsRecyclerView?.layoutManager = LinearLayoutManager(context)
-        adapter = ApartmentsRecyclerAdapter(viewModel.apartments?.value)
-
-        adapter?.listener = object: OnItemClickListener {
-            override fun onItemClick(apartmentId: Int) {
-                Log.d(TAG, "${viewModel.apartments?.value?.get(apartmentId)}")
-                Log.d(TAG, "ApartmentsRecyclerAdapter: apartment id is $apartmentId")
+            adapter?.listener = object: OnItemClickListener {
+                override fun onItemClick(apartmentId: Int) {
+                    Log.d(TAG, "${viewModel.apartments?.value?.get(apartmentId)}")
+                    Log.d(TAG, "ApartmentsRecyclerAdapter: apartment id is $apartmentId")
+                }
             }
-        }
 
-        apartmentsRecyclerView?.adapter = adapter
+            apartmentsRecyclerView?.adapter = adapter
 
-        viewModel.apartments?.observe(viewLifecycleOwner) {
-            adapter?.apartments = it
-            adapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
+            viewModel.apartments?.observe(viewLifecycleOwner) {
+                progressBar?.visibility = View.VISIBLE
+                adapter?.apartments = it
+                adapter?.notifyDataSetChanged()
+                progressBar?.visibility = View.GONE
+            }
 
-        binding.pullToRefresh.setOnRefreshListener {
-            reloadData()
-        }
+            binding.pullToRefresh.setOnRefreshListener {
+                reloadData()
+            }
 
-        ApartmentModel.instance.apartmentsListLoadingState.observe(viewLifecycleOwner) { state ->
-            binding.pullToRefresh.isRefreshing = state == ApartmentModel.LoadingState.LOADING
+            ApartmentModel.instance.apartmentsListLoadingState.observe(viewLifecycleOwner) { state ->
+                binding.pullToRefresh.isRefreshing = state == ApartmentModel.LoadingState.LOADING
+            }
         }
 
         return binding.root
@@ -72,7 +74,8 @@ class ApartmentsFragment : Fragment() {
 
     private fun reloadData() {
         progressBar?.visibility = View.VISIBLE
-        ApartmentModel.instance.refreshAllApartments()
-        progressBar?.visibility = View.GONE
+        viewModel.refreshAllApartments {
+            progressBar?.visibility = View.GONE
+        }
     }
 }

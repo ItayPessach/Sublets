@@ -5,8 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.apartments.common.FireStoreModel
 import com.example.apartments.dao.AppLocalDatabase
+import com.example.apartments.model.auth.AuthModel
+import com.example.apartments.model.user.UserModel
 import com.google.firebase.Timestamp
 import java.util.concurrent.Executors
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 class ApartmentModel private constructor() {
     enum class LoadingState {
@@ -18,15 +23,24 @@ class ApartmentModel private constructor() {
     private val firebaseDB = FireStoreModel.instance.db
     private var executor = Executors.newSingleThreadExecutor()
     val apartmentsListLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
+    val likedApartmentsListLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
 
     companion object {
         const val APARTMENTS_COLLECTION_PATH = "apartments"
         val instance: ApartmentModel = ApartmentModel()
     }
 
-    fun getAllApartments(): LiveData<MutableList<Apartment>> {
+    suspend fun getAllApartments(): LiveData<MutableList<Apartment>> {
         refreshAllApartments()
         return roomDB.apartmentDao().getAll()
+    }
+
+    fun getAllLikedApartments(): LiveData<MutableList<Apartment>> {
+        return roomDB.apartmentDao().getAllLikedApartments()
+    }
+
+    fun getAllMyApartments(): LiveData<MutableList<Apartment>> {
+        return roomDB.apartmentDao().getAllMyApartments()
     }
 
     private fun getAllApartmentsFromFirestore(since: Long, callback: (List<Apartment>) -> Unit) {
@@ -48,9 +62,9 @@ class ApartmentModel private constructor() {
             }
     }
 
-
-   fun refreshAllApartments() {
+   suspend fun refreshAllApartments() {
        apartmentsListLoadingState.value = LoadingState.LOADING
+       val loggedInUser = UserModel.instance.fetchUser(AuthModel.instance.getUserId()!!)
 
        // 1. Get the latest local update date
        val lastUpdated: Long = Apartment.lastUpdated
@@ -63,11 +77,8 @@ class ApartmentModel private constructor() {
            executor.execute {
                var time = lastUpdated
                for (apartment in apartments) {
-                   // TODO check if the apartment is liked by the user and add liked boolean attribute to the apartment
-                   // get the user context, get the user liked sublets and check if the current sublet's id is in it.
-                   // if it's in it then set the liked attribute to true
-                   apartment.liked = false // TODO set the liked to the correct value
-                   // TODO also add if the apartment is the user's apartment and add the attribute isMine to the apartment
+                   apartment.liked = loggedInUser!!.likedApartments.contains(apartment.id)
+                   apartment.isMine = loggedInUser.id == apartment.userId
                    roomDB.apartmentDao().insert(apartment)
 
                    apartment.lastUpdated?.let {
@@ -84,24 +95,15 @@ class ApartmentModel private constructor() {
    }
 
     suspend fun addApartment(apartment: Apartment) {
-        firebaseDB.collection(APARTMENTS_COLLECTION_PATH).add(apartment.json).addOnSuccessListener {
-            refreshAllApartments()
+        suspendCoroutine<Unit> { continuation ->
+            firebaseDB.collection(APARTMENTS_COLLECTION_PATH).add(apartment.json).addOnSuccessListener {
+                continuation.resume(Unit)
+            }.addOnFailureListener { exception ->
+                continuation.resumeWithException(exception)
+            }
         }
+
+        refreshAllApartments()
     }
 
-    fun addLikedApartment(apartmentId: String) {
-        // addLikedApartmentToFirestore(apartmentId) // TODO add liked apartment to user document in the liked array
-
-        executor.execute {
-            roomDB.apartmentDao().setApartmentLiked(apartmentId, true)
-        }
-    }
-
-    fun removeLikedApartment(apartmentId: String) {
-        // removeLikedApartmentFromFirestore(apartmentId) // TODO remove liked apartment from user document in the liked array
-
-        executor.execute {
-            roomDB.apartmentDao().setApartmentLiked(apartmentId, false)
-        }
-    }
 }

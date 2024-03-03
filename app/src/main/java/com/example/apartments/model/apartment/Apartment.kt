@@ -28,6 +28,7 @@ data class Apartment(
     val endDate: Long,
     val imageUrl: String,
     var liked: Boolean = false,
+    var isMine: Boolean = false,
     var lastUpdated: Long? = null
 ) {
 
@@ -55,7 +56,6 @@ data class Apartment(
         private const val START_DATE_KEY = "startDate"
         private const val END_DATE_KEY = "endDate"
         private const val IMAGE_URL_KEY = "imageUrl"
-        private const val LIKED_KEY = "liked"
 
         private const val LOCAL_LAST_UPDATED = "get_last_updated"
         const val LAST_UPDATED = "lastUpdated"
@@ -70,9 +70,8 @@ data class Apartment(
             val startDate = json[START_DATE_KEY] as? Long ?: 0
             val endDate = json[END_DATE_KEY] as? Long ?: 0
             val imageUrl = json[IMAGE_URL_KEY] as? String ?: ""
-            val liked = json[LIKED_KEY] as? Boolean ?: false
 
-            val apartment = Apartment(id, userId, title, pricePerNight, description, city, apartmentType, numOfRooms, startDate, endDate, imageUrl, liked)
+            val apartment = Apartment(id, userId, title, pricePerNight, description, city, apartmentType, numOfRooms, startDate, endDate, imageUrl)
 
             val timestamp: Timestamp? = json[LAST_UPDATED] as? Timestamp
             timestamp?.let {
@@ -94,7 +93,6 @@ data class Apartment(
                 START_DATE_KEY to startDate,
                 END_DATE_KEY to endDate,
                 IMAGE_URL_KEY to imageUrl,
-                LIKED_KEY to liked,
                 LAST_UPDATED to FieldValue.serverTimestamp()
             )
 }

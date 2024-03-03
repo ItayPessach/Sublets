@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.R
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
+import com.example.apartments.model.user.UserModel
+import com.example.apartments.modules.apartments.ApartmentsViewModel
 
 interface OnItemClickListener {
     fun onItemClick(apartmentId: Int)
 }
 
-class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?): RecyclerView.Adapter<ApartmentsViewHolder>() {
+class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?, private val viewModel: ApartmentsViewModel): RecyclerView.Adapter<ApartmentsViewHolder>() {
     var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApartmentsViewHolder {
@@ -32,18 +34,12 @@ class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?): RecyclerView.
         listener?.onItemClick(apartmentId)
     }
 
-    fun onLikeClick(apartmentId: Int) {
-        Log.i("ApartmentsRecyclerAdapter", "Like button clicked for apartment $apartmentId")
-        val apartment = apartments?.get(apartmentId)
+    fun onLikeClick(position: Int) {
+        val apartment = apartments?.get(position)
 
         if (apartment != null) {
             val liked = !apartment.liked
-
-            if (liked) {
-                ApartmentModel.instance.addLikedApartment(apartment.id)
-            } else {
-                ApartmentModel.instance.removeLikedApartment(apartment.id)
-            }
+            viewModel.onLikeClick(apartment.id, liked)
         }
     }
 }

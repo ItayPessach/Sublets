@@ -12,6 +12,7 @@ data class User(
     val name: String,
     val phoneNumber: String,
     val avatarUrl: String,
+    val likedApartments: MutableList<String> = mutableListOf(),
     var lastUpdated: Long? = null
 ) {
 
@@ -32,6 +33,7 @@ data class User(
         private const val NAME_KEY = "name"
         private const val PHONE_NUMBER_KEY = "phoneNumber"
         private const val AVATAR_URL_KEY = "avatarUrl"
+        const val LIKED_APARTMENTS_KEY = "likedApartments"
 
         private const val LOCAL_LAST_UPDATED = "get_last_updated"
         const val LAST_UPDATED = "lastUpdated"
@@ -39,8 +41,9 @@ data class User(
             val name = json[NAME_KEY] as? String ?: ""
             val phoneNumber = json[PHONE_NUMBER_KEY] as? String ?: ""
             val avatarUrl = json[AVATAR_URL_KEY] as? String ?: ""
+            val likedApartments = json[LIKED_APARTMENTS_KEY] as? MutableList<String> ?: mutableListOf()
 
-            val user = User(id, name, phoneNumber, avatarUrl)
+            val user = User(id, name, phoneNumber, avatarUrl, likedApartments)
 
             val timestamp: Timestamp? = json[LAST_UPDATED] as? Timestamp
             timestamp?.let {
@@ -55,6 +58,7 @@ data class User(
             NAME_KEY to name,
             PHONE_NUMBER_KEY to phoneNumber,
             AVATAR_URL_KEY to avatarUrl,
+            LIKED_APARTMENTS_KEY to likedApartments,
             LAST_UPDATED to FieldValue.serverTimestamp()
         )
 }
