@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.R
 import com.example.apartments.model.apartment.Apartment
+import com.example.apartments.model.user.UserModel
 import com.example.apartments.modules.apartments.ApartmentsViewModel
 import com.example.apartments.utils.dateUtils
 import com.squareup.picasso.Picasso

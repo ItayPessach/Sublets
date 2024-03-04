@@ -1,27 +1,23 @@
-package com.example.apartments.modules.apartments
+package com.example.apartments.modules.apartments.myApartments
 
 import android.util.Log
 import android.view.View
-import com.example.apartments.model.user.UserModel
 import com.example.apartments.modules.apartments.adapter.ApartmentsRecyclerAdapter
 import com.example.apartments.modules.apartments.adapter.OnItemClickListener
 import com.example.apartments.modules.apartments.base.BaseApartmentsFragment
 
-class ApartmentsFragment : BaseApartmentsFragment() {
-    private var TAG = "ApartmentsFragment"
 
-    override suspend fun preparations() {
-        return UserModel.instance.getMe()
-    }
+class MyApartmentsFragment : BaseApartmentsFragment() {
+    private var TAG = "MyApartmentsFragment"
 
     override fun setupApartmentsAdapter(): ApartmentsRecyclerAdapter {
-        return ApartmentsRecyclerAdapter(viewModel.apartments?.value, viewModel)
+        return ApartmentsRecyclerAdapter(viewModel.getMyApartments(), viewModel)
     }
 
     override fun observeApartments() {
         viewModel.apartments?.observe(viewLifecycleOwner) {
             progressBar.visibility = View.VISIBLE
-            adapter.apartments = it
+            adapter.apartments = viewModel.getMyApartments()
             adapter.notifyDataSetChanged()
             progressBar.visibility = View.GONE
         }

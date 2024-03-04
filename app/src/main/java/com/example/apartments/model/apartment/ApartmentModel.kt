@@ -30,17 +30,9 @@ class ApartmentModel private constructor() {
         val instance: ApartmentModel = ApartmentModel()
     }
 
-    suspend fun getAllApartments(): LiveData<MutableList<Apartment>> {
+    fun getAllApartments(): LiveData<MutableList<Apartment>> {
         refreshAllApartments()
         return roomDB.apartmentDao().getAll()
-    }
-
-    fun getAllLikedApartments(): LiveData<MutableList<Apartment>> {
-        return roomDB.apartmentDao().getAllLikedApartments()
-    }
-
-    fun getAllMyApartments(): LiveData<MutableList<Apartment>> {
-        return roomDB.apartmentDao().getAllMyApartments()
     }
 
     private fun getAllApartmentsFromFirestore(since: Long, callback: (List<Apartment>) -> Unit) {
@@ -61,10 +53,8 @@ class ApartmentModel private constructor() {
                 }
             }
     }
-
-   suspend fun refreshAllApartments() {
+    fun refreshAllApartments() {
        apartmentsListLoadingState.value = LoadingState.LOADING
-       val loggedInUser = UserModel.instance.fetchUser(AuthModel.instance.getUserId()!!)
 
        // 1. Get the latest local update date
        val lastUpdated: Long = Apartment.lastUpdated
@@ -77,8 +67,6 @@ class ApartmentModel private constructor() {
            executor.execute {
                var time = lastUpdated
                for (apartment in apartments) {
-                   apartment.liked = loggedInUser!!.likedApartments.contains(apartment.id)
-                   apartment.isMine = loggedInUser.id == apartment.userId
                    roomDB.apartmentDao().insert(apartment)
 
                    apartment.lastUpdated?.let {

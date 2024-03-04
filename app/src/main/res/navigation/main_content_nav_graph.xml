@@ -21,12 +21,12 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/likedApartmentsFragment"
-        android:name="com.example.apartments.modules.likedApartments.LikedApartmentsFragment"
+        android:name="com.example.apartments.modules.apartments.likedApartments.LikedApartmentsFragment"
         android:label="fragment_liked_apartments"
         tools:layout="@layout/fragment_liked_apartments" />
     <fragment
         android:id="@+id/myApartmentsFragment"
-        android:name="com.example.apartments.modules.myApartments.MyApartmentsFragment"
+        android:name="com.example.apartments.modules.apartments.myApartments.MyApartmentsFragment"
         android:label="fragment_my_apartments"
         tools:layout="@layout/fragment_my_apartments" />
 </navigation>

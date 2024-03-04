@@ -72,11 +72,12 @@ class UserModel private constructor() {
     }
 
     suspend fun addLikedApartment(apartmentId: String) {
-        suspendCoroutine<Unit> { continuation ->
+        suspendCoroutine { continuation ->
             firebaseDB.collection(USERS_COLLECTION_PATH)
                 .document(AuthModel.instance.getUserId()!!)
                 .update(User.LIKED_APARTMENTS_KEY, FieldValue.arrayUnion(apartmentId))
                 .addOnSuccessListener {
+                    currentUser?.likedApartments?.add(apartmentId)
                     continuation.resume(Unit)
                 }
                 .addOnFailureListener { exception ->
@@ -90,11 +91,12 @@ class UserModel private constructor() {
     }
 
     suspend fun removeLikedApartment(apartmentId: String) {
-        suspendCoroutine<Unit> { continuation ->
+        suspendCoroutine { continuation ->
             firebaseDB.collection(USERS_COLLECTION_PATH)
                 .document(AuthModel.instance.getUserId()!!)
                 .update(User.LIKED_APARTMENTS_KEY, FieldValue.arrayRemove(apartmentId))
                 .addOnSuccessListener {
+                    currentUser?.likedApartments?.remove(apartmentId)
                     continuation.resume(Unit)
                 }
                 .addOnFailureListener { exception ->

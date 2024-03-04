@@ -21,25 +21,52 @@ class ApartmentsViewModel: ViewModel() {
         }
     }
 
-    fun getAllApartments(callback: () -> Unit) {
-        viewModelScope.launch {
-            apartments = ApartmentModel.instance.getAllApartments()
-            callback()
+    fun setAllApartments() {
+        val apartmentsFromRoomDB = ApartmentModel.instance.getAllApartments()
+        val currentUser = UserModel.instance.currentUser!!
+
+        for (apartment in apartmentsFromRoomDB.value ?: mutableListOf()) {
+            if (currentUser.likedApartments.contains(apartment.id)) {
+                apartment.liked = true
+            }
+
+            if (currentUser.id == apartment.userId) {
+                apartment.isMine = true
+            }
         }
+
+        apartments = apartmentsFromRoomDB
     }
 
-    fun getAllLikedApartments(): LiveData<MutableList<Apartment>> {
-        return ApartmentModel.instance.getAllLikedApartments()
-    }
+    fun getLikedApartments(): MutableList<Apartment> {
+        val likedApartmentsList = mutableListOf<Apartment>()
+        val currentUser = UserModel.instance.currentUser!!
 
-    fun getAllMyApartments(): LiveData<MutableList<Apartment>> {
-        return ApartmentModel.instance.getAllMyApartments()
-    }
-
-    fun refreshAllApartments(callback: () -> Unit) {
-        viewModelScope.launch {
-            ApartmentModel.instance.refreshAllApartments()
-            callback()
+        for (apartment in apartments?.value ?: mutableListOf()) {
+            if (currentUser.likedApartments.contains(apartment.id)) {
+                apartment.liked = true
+                likedApartmentsList.add(apartment)
+            }
         }
+
+        return likedApartmentsList
+    }
+
+    fun getMyApartments(): MutableList<Apartment> {
+        val myApartmentsList = mutableListOf<Apartment>()
+        val currentUser = UserModel.instance.currentUser!!
+
+        for (apartment in apartments?.value ?: mutableListOf()) {
+            if (currentUser.id == apartment.userId) {
+                apartment.isMine = true
+                myApartmentsList.add(apartment)
+            }
+        }
+
+        return myApartmentsList
+    }
+
+    fun refreshAllApartments() {
+        ApartmentModel.instance.refreshAllApartments()
     }
 }
