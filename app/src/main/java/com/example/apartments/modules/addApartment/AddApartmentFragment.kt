@@ -30,12 +30,10 @@ import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.model.apartment.ApartmentType
 import com.example.apartments.model.auth.AuthModel
-import com.example.apartments.modules.register.RegisterFragment
 import com.example.apartments.retrofit.RegionsSingelton
 import com.example.apartments.utils.dateUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 class AddApartmentFragment : Fragment() {
@@ -98,6 +96,8 @@ class AddApartmentFragment : Fragment() {
         typeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         typeSelectField.adapter = typeAdapter
 
+        datesTextView.text = "${dateUtils.formatDate(startDate.timeInMillis)} - ${dateUtils.formatDate(endDate.timeInMillis)}"
+
         datesBtn.setOnClickListener(::onDatesButtonClicked)
         addImageBtn.setOnClickListener(::onAddImageButtonClicked)
         uploadApartmentBtn.setOnClickListener(::onUploadApartmentButtonClicked)
@@ -141,11 +141,11 @@ class AddApartmentFragment : Fragment() {
         val isValidDescription = RequiredValidation.validateRequiredTextField(descriptionTextField, "description")
         val isValidRooms = RequiredValidation.validateRequiredTextField(roomsTextField, "rooms")
         val isValidPrice = RequiredValidation.validateRequiredTextField(priceTextField, "price")
+        val isValidPhoto = imageUri != null
 
-        if (isValidTitle && isValidDescription && isValidRooms && isValidPrice) { // TODO validate all...
+        if (isValidTitle && isValidDescription && isValidRooms && isValidPrice && isValidPhoto) {
             lifecycleScope.launch(Dispatchers.Main) {
                 try {
-                    Log.d(TAG, "firebase create apartment document")
                     val title = titleTextField.text.toString()
                     val userId = AuthModel.instance.getUserId()!!
                     val description = descriptionTextField.text.toString()
@@ -160,7 +160,7 @@ class AddApartmentFragment : Fragment() {
                     ApartmentModel.instance.addApartment(apartment)
                     Navigation.findNavController(view).popBackStack(R.id.apartmentsFragment, false)
                 } catch (e: Exception) {
-                    Log.e(RegisterFragment.TAG, "An unexpected error occurred: ${e.message}")
+                    Log.e(TAG, "An unexpected error occurred: ${e.message}")
                     Toast.makeText(
                         MyApplication.Globals.appContext,
                         "failed to upload apartment",
@@ -168,6 +168,13 @@ class AddApartmentFragment : Fragment() {
                     ).show()
                 }
             }
+        } else {
+            Log.e(TAG, "some of the apartment details are missing")
+            Toast.makeText(
+                MyApplication.Globals.appContext,
+                "missing some sublet details",
+                Toast.LENGTH_SHORT,
+            ).show()
         }
     }
 }

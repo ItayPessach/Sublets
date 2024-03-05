@@ -99,7 +99,6 @@ class RegisterFragment : Fragment() {
         val isValidPhoto = avatarUri != null
 
         if (isValidName && isValidEmail && isValidPassword && isValidPhoneNumber && isValidPhoto) {
-            Log.d(LoginFragment.TAG, "firebase create user")
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val authResult = AuthModel.instance.signUp(emailTextField.text.toString(), passwordTextField.text.toString())
@@ -115,7 +114,7 @@ class RegisterFragment : Fragment() {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(
                             MyApplication.Globals.appContext,
-                            "email is already used",
+                            e.message,
                             Toast.LENGTH_SHORT,
                         ).show()
                     }

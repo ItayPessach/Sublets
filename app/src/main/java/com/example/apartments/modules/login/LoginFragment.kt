@@ -69,7 +69,7 @@ class LoginFragment : Fragment() {
         if (isValidEmail && isValidPassword) {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    val authResult = AuthModel.instance.signIn(emailTextField.text.toString(), passwordTextField.text.toString())
+                    AuthModel.instance.signIn(emailTextField.text.toString(), passwordTextField.text.toString())
 
                     withContext(Dispatchers.Main) {
                         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_appActivity)
