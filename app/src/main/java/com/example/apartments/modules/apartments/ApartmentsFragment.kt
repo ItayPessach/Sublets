@@ -2,10 +2,14 @@ package com.example.apartments.modules.apartments
 
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import com.example.apartments.R
 import com.example.apartments.model.user.UserModel
 import com.example.apartments.modules.apartments.adapter.ApartmentsRecyclerAdapter
 import com.example.apartments.modules.apartments.adapter.OnItemClickListener
 import com.example.apartments.modules.apartments.base.BaseApartmentsFragment
+
 
 class ApartmentsFragment : BaseApartmentsFragment() {
     private var TAG = "ApartmentsFragment"
@@ -30,8 +34,11 @@ class ApartmentsFragment : BaseApartmentsFragment() {
     override fun setupApartmentsAdapterListener(): OnItemClickListener {
         return object: OnItemClickListener {
             override fun onItemClick(apartmentId: Int) {
-                Log.d(TAG, "${viewModel.apartments?.value?.get(apartmentId)}")
                 Log.d(TAG, "ApartmentsRecyclerAdapter: apartment id is $apartmentId")
+                val apartment = viewModel.apartments?.value?.get(apartmentId)
+                apartment?.let {
+                    findNavController().navigate(R.id.action_apartmentsFragment_to_expandedApartmentFragment, bundleOf("apartmentId" to apartment.id))
+                }
             }
         }
     }

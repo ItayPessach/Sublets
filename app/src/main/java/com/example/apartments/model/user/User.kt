@@ -11,6 +11,7 @@ data class User(
     @PrimaryKey val id: String,
     val name: String,
     val phoneNumber: String,
+    val email: String,
     val avatarUrl: String,
     val likedApartments: MutableList<String> = mutableListOf(),
     var lastUpdated: Long? = null
@@ -32,6 +33,7 @@ data class User(
 
         private const val NAME_KEY = "name"
         private const val PHONE_NUMBER_KEY = "phoneNumber"
+        private const val EMAIL_KEY = "email"
         private const val AVATAR_URL_KEY = "avatarUrl"
         const val LIKED_APARTMENTS_KEY = "likedApartments"
 
@@ -40,10 +42,11 @@ data class User(
         fun fromJson(json: Map<String, Any>, id: String): User {
             val name = json[NAME_KEY] as? String ?: ""
             val phoneNumber = json[PHONE_NUMBER_KEY] as? String ?: ""
+            val email = json[EMAIL_KEY] as? String ?: ""
             val avatarUrl = json[AVATAR_URL_KEY] as? String ?: ""
             val likedApartments = json[LIKED_APARTMENTS_KEY] as? MutableList<String> ?: mutableListOf()
 
-            val user = User(id, name, phoneNumber, avatarUrl, likedApartments)
+            val user = User(id, name, phoneNumber, avatarUrl, email, likedApartments)
 
             val timestamp: Timestamp? = json[LAST_UPDATED] as? Timestamp
             timestamp?.let {
@@ -57,6 +60,7 @@ data class User(
         get() = hashMapOf(
             NAME_KEY to name,
             PHONE_NUMBER_KEY to phoneNumber,
+            EMAIL_KEY to email,
             AVATAR_URL_KEY to avatarUrl,
             LIKED_APARTMENTS_KEY to likedApartments,
             LAST_UPDATED to FieldValue.serverTimestamp()

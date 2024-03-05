@@ -7,7 +7,7 @@ import com.example.apartments.base.MyApplication
 import com.example.apartments.model.apartment.Apartment
 
 
-@Database(entities = [Apartment:: class], version = 14)
+@Database(entities = [Apartment:: class], version = 16)
 abstract class AppLocalDbRepository: RoomDatabase() {
     abstract fun apartmentDao(): ApartmentDao
 }

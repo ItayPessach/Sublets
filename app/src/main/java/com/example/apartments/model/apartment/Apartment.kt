@@ -7,7 +7,7 @@ import com.example.apartments.base.MyApplication
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 
-enum class ApartmentType(type: String) {
+enum class Type(type: String) {
     Apartment("Apartment"),
     House("House"),
     Villa("Villa"),
@@ -22,7 +22,7 @@ data class Apartment(
     val pricePerNight: Int,
     val description: String,
     val city: String,
-    val apartmentType: ApartmentType,
+    val type: Type,
     val numOfRooms: Int,
     val startDate: Long,
     val endDate: Long,
@@ -65,7 +65,7 @@ data class Apartment(
             val pricePerNight = (json[PRICE_PER_NIGHT_KEY] as? Long)?.toInt() ?: 0
             val description = json[DESCRIPTION_KEY] as? String ?: ""
             val city = json[CITY_KEY] as? String ?: ""
-            val apartmentType = json[APARTMENT_TYPE_KEY] as? ApartmentType ?: ApartmentType.House
+            val apartmentType = json[APARTMENT_TYPE_KEY] as? Type ?: Type.House
             val numOfRooms = (json[NUM_OF_ROOMS_KEY] as? Long)?.toInt() ?: 0
             val startDate = json[START_DATE_KEY] as? Long ?: 0
             val endDate = json[END_DATE_KEY] as? Long ?: 0
@@ -88,7 +88,7 @@ data class Apartment(
                 PRICE_PER_NIGHT_KEY to pricePerNight,
                 DESCRIPTION_KEY to description,
                 CITY_KEY to city,
-                APARTMENT_TYPE_KEY to apartmentType,
+                APARTMENT_TYPE_KEY to type,
                 NUM_OF_ROOMS_KEY to numOfRooms,
                 START_DATE_KEY to startDate,
                 END_DATE_KEY to endDate,

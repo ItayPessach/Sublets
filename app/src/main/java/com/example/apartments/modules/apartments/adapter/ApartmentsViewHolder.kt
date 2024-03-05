@@ -7,17 +7,12 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.R
 import com.example.apartments.model.apartment.Apartment
-import com.example.apartments.model.user.UserModel
-import com.example.apartments.modules.apartments.ApartmentsViewModel
 import com.example.apartments.utils.dateUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
-import java.text.SimpleDateFormat
-import java.util.Date
 
 class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): RecyclerView.ViewHolder(itemView) {
     private val TAG = "ApartmentsViewHolder"
@@ -67,7 +62,7 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
         priceTextView.text = "${apartment?.pricePerNight.toString()}$"
         locationTextView.text = apartment?.city
         roomsTextView.text = apartment?.numOfRooms.toString()
-        propertyTypeTextView.text = apartment?.apartmentType.toString()
+        propertyTypeTextView.text = apartment?.type.toString()
         datesTextView.text = "${dateUtils.formatDate(apartment?.startDate ?: 0)} - ${dateUtils.formatDate(apartment?.endDate ?: 0)}"
 
         Picasso.get()

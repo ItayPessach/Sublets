@@ -105,7 +105,7 @@ class RegisterFragment : Fragment() {
                     val authResult = AuthModel.instance.signUp(emailTextField.text.toString(), passwordTextField.text.toString())
                     val userId = authResult.user!!.uid
                     val avatarUrl = FirebaseStorageModel.instance.addImageToFirebaseStorage(avatarUri!!, FirebaseStorageModel.USERS_PATH)
-                    val user = User(userId, nameTextField.text.toString(),phoneNumberTextField.text.toString(), avatarUrl)
+                    val user = User(userId, nameTextField.text.toString(),phoneNumberTextField.text.toString(), emailTextField.text.toString(), avatarUrl)
                     UserModel.instance.addUser(user)
                     withContext(Dispatchers.Main) {
                         Navigation.findNavController(view).popBackStack(R.id.loginFragment, false)

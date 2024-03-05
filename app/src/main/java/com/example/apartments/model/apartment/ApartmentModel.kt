@@ -35,6 +35,10 @@ class ApartmentModel private constructor() {
         return roomDB.apartmentDao().getAll()
     }
 
+    fun getApartmentById(id: String): LiveData<Apartment> {
+        return roomDB.apartmentDao().getApartmentById(id)
+    }
+
     private fun getAllApartmentsFromFirestore(since: Long, callback: (List<Apartment>) -> Unit) {
         firebaseDB.collection(APARTMENTS_COLLECTION_PATH)
             .whereGreaterThanOrEqualTo(Apartment.LAST_UPDATED, Timestamp(since, 0))
