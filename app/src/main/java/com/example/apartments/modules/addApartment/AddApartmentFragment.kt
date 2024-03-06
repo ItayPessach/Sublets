@@ -28,7 +28,7 @@ import com.example.apartments.common.RequiredValidation
 import com.example.apartments.databinding.FragmentAddApartmentBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
-import com.example.apartments.model.apartment.ApartmentType
+import com.example.apartments.model.apartment.Type
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.retrofit.RegionsSingelton
 import com.example.apartments.utils.dateUtils
@@ -155,7 +155,7 @@ class AddApartmentFragment : Fragment() {
                     val location = locationSelectField.selectedItem.toString()
                     val imageUrl = FirebaseStorageModel.instance.addImageToFirebaseStorage(imageUri!!, FirebaseStorageModel.APARTMENTS_PATH)
 
-                    val apartment = Apartment("", userId, title, price, description, location, ApartmentType.valueOf(type), numOfRooms, startDate.timeInMillis, endDate.timeInMillis, imageUrl)
+                    val apartment = Apartment("", userId, title, price, description, location, Type.valueOf(type), numOfRooms, startDate.timeInMillis, endDate.timeInMillis, imageUrl)
 
                     ApartmentModel.instance.addApartment(apartment)
                     Navigation.findNavController(view).popBackStack(R.id.apartmentsFragment, false)
