@@ -5,6 +5,7 @@
     android:id="@+id/expandedApartmentLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/app_gradient_background"
     tools:context=".modules.expandedApartment.ExpandedApartmentFragment">
 
     <ProgressBar
@@ -12,6 +13,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,33 +23,8 @@
         android:id="@+id/clExpandedApartmentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:id="@+id/tvExpandedApartmentDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/black_rounded_corner"
-            android:ems="10"
-            android:fontFamily="@font/outfit_font"
-            android:inputType="textMultiLine"
-            android:lines="5"
-            android:maxLines="10"
-            android:minLines="3"
-            android:padding="16dp"
-            android:scrollbars="vertical"
-            android:text="Description"
-            android:textColor="#000000"
-            android:textColorHint="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentType" />
 
         <ImageView
             android:id="@+id/ivExpandedApartmentImage"
@@ -60,16 +37,15 @@
 
         <TextView
             android:id="@+id/tvExpandedApartmentTitle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="@font/outfit_font"
             android:text="title"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivExpandedApartmentImage" />
 
@@ -84,8 +60,8 @@
             android:id="@+id/ivExpandedApartmentCalendarIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="32dp"
             android:src="@drawable/calendar_icon"
             app:layout_constraintStart_toEndOf="@+id/tvExpandedApartmentTitle"
             app:layout_constraintTop_toBottomOf="@+id/ivExpandedApartmentImage" />
@@ -94,14 +70,16 @@
             android:id="@+id/tvExpandedApartmentDates"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="@font/outfit_font"
             android:text="dates"
             android:textColor="#000000"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentCalendarIcon"
+            app:layout_constraintStart_toStartOf="@+id/ivExpandedApartmentCalendarIcon"
             app:layout_constraintTop_toBottomOf="@+id/ivExpandedApartmentImage" />
 
         <ImageView
@@ -116,7 +94,7 @@
 
         <TextView
             android:id="@+id/tvExpandedApartmentLocation"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
@@ -124,7 +102,7 @@
             android:text="location"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentLocationIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentTitle" />
 
@@ -153,7 +131,7 @@
 
         <TextView
             android:id="@+id/tvExpandedApartmentRooms"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
@@ -161,7 +139,7 @@
             android:text="rooms"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentRoomsIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentLocation" />
 
@@ -177,7 +155,7 @@
 
         <TextView
             android:id="@+id/tvExpandedApartmentType"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
@@ -185,9 +163,35 @@
             android:text="type"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentTypeIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentRooms" />
+
+        <TextView
+            android:id="@+id/tvExpandedApartmentDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/black_rounded_corner"
+            android:ems="10"
+            android:fontFamily="@font/outfit_font"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:maxLines="10"
+            android:minLines="3"
+            android:padding="16dp"
+            android:scrollbars="vertical"
+            android:text="Description"
+            android:textColor="#000000"
+            android:textColorHint="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentType" />
 
         <ImageView
             android:id="@+id/ivExpandedApartmentPersonIcon"
@@ -201,7 +205,7 @@
 
         <TextView
             android:id="@+id/tvExpandedApartmentPerson"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
@@ -209,7 +213,7 @@
             android:text="person"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentPersonIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentDescription" />
 
@@ -233,7 +237,7 @@
             android:text="email"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentEmailIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentPerson" />
 
@@ -250,15 +254,14 @@
         <TextView
             android:id="@+id/tvExpandedApartmentPhone"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/outfit_font"
             android:text="phone"
             android:textColor="#000000"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentPhoneIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentEmail" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,11 +14,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.apartments.databinding.FragmentExpandedApartmentBinding
 import com.example.apartments.model.apartment.Apartment
-import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.model.user.UserModel
 import com.example.apartments.utils.dateUtils
 import com.squareup.picasso.Picasso

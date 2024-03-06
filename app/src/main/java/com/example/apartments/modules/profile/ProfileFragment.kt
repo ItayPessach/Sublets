@@ -26,7 +26,6 @@ import com.example.apartments.common.RequiredValidation
 import com.example.apartments.databinding.FragmentProfileBinding
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.model.user.UpdateUserInput
-import com.example.apartments.modules.register.RegisterFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
