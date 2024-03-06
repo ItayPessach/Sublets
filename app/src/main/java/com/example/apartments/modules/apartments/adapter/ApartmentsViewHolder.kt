@@ -1,5 +1,6 @@
 package com.example.apartments.modules.apartments.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.util.Log
@@ -57,9 +58,10 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun bind(apartment: Apartment?) {
         titleTextView.text = apartment?.title
-        priceTextView.text = "${apartment?.pricePerNight.toString()}$"
+        priceTextView.text = "${apartment?.pricePerNight}$"
         locationTextView.text = apartment?.city
         roomsTextView.text = apartment?.numOfRooms.toString()
         propertyTypeTextView.text = apartment?.type.toString()

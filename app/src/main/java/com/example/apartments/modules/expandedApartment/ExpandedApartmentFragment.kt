@@ -1,5 +1,6 @@
 package com.example.apartments.modules.expandedApartment
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -11,11 +12,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
-import com.example.apartments.R
 import com.example.apartments.databinding.FragmentExpandedApartmentBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
@@ -29,10 +29,12 @@ class ExpandedApartmentFragment : Fragment() {
     private var TAG = "ExpandedApartmentFragment"
 
     private lateinit var binding: FragmentExpandedApartmentBinding
+    private lateinit var viewModel: ExpandedApartmentViewModel
     private lateinit var progressBar: ProgressBar
     private lateinit var layout: View
     private lateinit var image: ImageView
     private lateinit var titleTextView: TextView
+    private lateinit var descriptionTextView: TextView
     private lateinit var priceTextView: TextView
     private lateinit var locationTextView: TextView
     private lateinit var roomsTextView: TextView
@@ -49,10 +51,12 @@ class ExpandedApartmentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentExpandedApartmentBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this)[ExpandedApartmentViewModel::class.java]
 
         progressBar = binding.pbExpandedApartment
         layout = binding.clExpandedApartmentLayout
         titleTextView = binding.tvExpandedApartmentTitle
+        descriptionTextView = binding.tvExpandedApartmentDescription
         priceTextView = binding.tvExpandedApartmentPrice
         locationTextView = binding.tvExpandedApartmentLocation
         roomsTextView = binding.tvExpandedApartmentRooms
@@ -65,21 +69,30 @@ class ExpandedApartmentFragment : Fragment() {
 
         val apartmentId: String = args.apartmentId
         lifecycleScope.launch {
-            val apartment = ApartmentModel.instance.getApartmentById(apartmentId)
-            if (apartment.value != null)
-                bind(apartment.value!!)
-            else {
-                Log.e(TAG, "Apartment with id $apartmentId not found")
-                findNavController().popBackStack()
+            viewModel.setApartment(apartmentId)
+            if (viewModel.apartment?.value != null) {
+                bind(viewModel.apartment?.value!!)
+            }
+
+            viewModel.apartment?.observe(viewLifecycleOwner) {
+                progressBar.visibility = View.VISIBLE
+                layout.visibility = View.GONE
+                lifecycleScope.launch {
+                    bind(it)
+                    progressBar.visibility = View.GONE
+                    layout.visibility = View.VISIBLE
+                }
             }
         }
 
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     private suspend fun bind(apartment: Apartment) {
         titleTextView.text = apartment.title
-        priceTextView.text = "${apartment.pricePerNight.toString()}$"
+        descriptionTextView.text = apartment.description
+        priceTextView.text = "${apartment.pricePerNight}$"
         locationTextView.text = apartment.city
         roomsTextView.text = apartment.numOfRooms.toString()
         propertyTypeTextView.text = apartment.type.toString()

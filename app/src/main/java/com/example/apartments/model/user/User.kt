@@ -46,7 +46,7 @@ data class User(
             val avatarUrl = json[AVATAR_URL_KEY] as? String ?: ""
             val likedApartments = json[LIKED_APARTMENTS_KEY] as? MutableList<String> ?: mutableListOf()
 
-            val user = User(id, name, phoneNumber, avatarUrl, email, likedApartments)
+            val user = User(id, name, phoneNumber, email, avatarUrl, likedApartments)
 
             val timestamp: Timestamp? = json[LAST_UPDATED] as? Timestamp
             timestamp?.let {

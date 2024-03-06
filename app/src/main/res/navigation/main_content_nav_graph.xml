@@ -11,7 +11,9 @@
         tools:layout="@layout/fragment_apartments">
         <action
             android:id="@+id/action_apartmentsFragment_to_expandedApartmentFragment"
-            app:destination="@id/expandedApartmentFragment" />
+            app:destination="@id/expandedApartmentFragment"
+            app:popUpTo="@id/apartmentsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/addApartmentFragment"
@@ -30,7 +32,9 @@
         tools:layout="@layout/fragment_apartments">
         <action
             android:id="@+id/action_likedApartmentsFragment_to_expandedApartmentFragment"
-            app:destination="@id/expandedApartmentFragment" />
+            app:destination="@id/expandedApartmentFragment"
+            app:popUpTo="@id/likedApartmentsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/myApartmentsFragment"
@@ -39,7 +43,9 @@
         tools:layout="@layout/fragment_apartments">
         <action
             android:id="@+id/action_MyApartmentsFragment_to_expandedApartmentFragment"
-            app:destination="@id/expandedApartmentFragment" />
+            app:destination="@id/expandedApartmentFragment"
+            app:popUpTo="@id/myApartmentsFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/expandedApartmentFragment"
