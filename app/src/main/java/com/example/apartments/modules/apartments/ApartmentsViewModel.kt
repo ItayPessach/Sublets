@@ -23,7 +23,13 @@ class ApartmentsViewModel: ViewModel() {
         }
     }
 
-    fun setAllApartments() {
+    fun onDeleteClick(apartmentId: String) {
+        viewModelScope.launch {
+            ApartmentModel.instance.deleteApartment(apartmentId)
+        }
+    }
+
+    suspend fun setAllApartments() {
         apartments = ApartmentModel.instance.getAllApartments()
     }
 
@@ -74,7 +80,7 @@ class ApartmentsViewModel: ViewModel() {
         return myApartmentsList
     }
 
-    fun refreshAllApartments() {
+    suspend fun refreshAllApartments() {
         ApartmentModel.instance.refreshAllApartments()
     }
 }

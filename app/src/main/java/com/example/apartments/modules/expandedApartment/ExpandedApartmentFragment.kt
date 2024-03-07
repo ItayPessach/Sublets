@@ -68,20 +68,15 @@ class ExpandedApartmentFragment : Fragment() {
         image = binding.ivExpandedApartmentImage
 
         val apartmentId: String = args.apartmentId
-        lifecycleScope.launch {
-            viewModel.setApartment(apartmentId)
-            if (viewModel.apartment?.value != null) {
-                bind(viewModel.apartment?.value!!)
-            }
+        viewModel.setApartment(apartmentId)
 
-            viewModel.apartment?.observe(viewLifecycleOwner) {
-                progressBar.visibility = View.VISIBLE
-                layout.visibility = View.GONE
-                lifecycleScope.launch {
-                    bind(it)
-                    progressBar.visibility = View.GONE
-                    layout.visibility = View.VISIBLE
-                }
+        viewModel.apartment?.observe(viewLifecycleOwner) {
+            progressBar.visibility = View.VISIBLE
+            layout.visibility = View.GONE
+            lifecycleScope.launch {
+                bind(it)
+                progressBar.visibility = View.GONE
+                layout.visibility = View.VISIBLE
             }
         }
 

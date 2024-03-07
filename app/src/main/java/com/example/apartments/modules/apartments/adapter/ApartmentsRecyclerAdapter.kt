@@ -14,7 +14,7 @@ interface OnItemClickListener {
     fun onItemClick(apartmentId: Int)
 }
 
-class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?, private val viewModel: ApartmentsViewModel): RecyclerView.Adapter<ApartmentsViewHolder>() {
+class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?, private val viewModel: ApartmentsViewModel, private val onEditClick: (apartmentId: String) -> Unit): RecyclerView.Adapter<ApartmentsViewHolder>() {
     var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ApartmentsViewHolder {
@@ -37,9 +37,23 @@ class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?, private val vi
     fun onLikeClick(position: Int) {
         val apartment = apartments?.get(position)
 
-        if (apartment != null) {
+        apartment?.let {
             val liked = !apartment.liked
             viewModel.onLikeClick(apartment.id, liked)
+        }
+    }
+
+    fun onEditClick(position: Int) {
+        val apartment = apartments?.get(position)
+        apartment?.let {
+            onEditClick(it.id)
+        }
+    }
+
+    fun onDeleteClick(position: Int) {
+        val apartment = apartments?.get(position)
+        apartment?.let {
+            viewModel.onDeleteClick(it.id)
         }
     }
 }

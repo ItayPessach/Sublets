@@ -5,12 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.apartments.common.FireStoreModel
 import com.example.apartments.dao.AppLocalDatabase
-import com.example.apartments.model.auth.AuthModel
-import com.example.apartments.model.user.UserModel
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -23,7 +23,6 @@ class ApartmentModel private constructor() {
 
     private val roomDB = AppLocalDatabase.db
     private val firebaseDB = FireStoreModel.instance.db
-    private var executor = Executors.newSingleThreadExecutor()
     val apartmentsListLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
 
     companion object {
@@ -31,13 +30,13 @@ class ApartmentModel private constructor() {
         val instance: ApartmentModel = ApartmentModel()
     }
 
-    fun getAllApartments(): LiveData<MutableList<Apartment>> {
+    suspend fun getAllApartments(): LiveData<MutableList<Apartment>> {
         refreshAllApartments()
         return roomDB.apartmentDao().getAll()
     }
 
-    fun getApartmentById(id: String): LiveData<Apartment> {
-        return roomDB.apartmentDao().getApartmentById(id)
+    fun getApartment(id: String): LiveData<Apartment> {
+        return roomDB.apartmentDao().getApartment(id)
     }
 
     suspend fun setApartmentLiked(id: String, liked: Boolean) {
@@ -46,63 +45,67 @@ class ApartmentModel private constructor() {
         }
     }
 
-    private fun getAllApartmentsFromFirestore(since: Long, callback: (List<Apartment>) -> Unit) {
-        firebaseDB.collection(APARTMENTS_COLLECTION_PATH)
-            .whereGreaterThanOrEqualTo(Apartment.LAST_UPDATED, Timestamp(since, 0))
-            .get().addOnCompleteListener {
-                when (it.isSuccessful) {
-                    true -> {
-                        val apartments : MutableList<Apartment> = mutableListOf()
-                        for (json in it.result) {
-                            apartments.add(Apartment.fromJson(json.data, json.id))
-                        }
-
-                        callback(apartments)
-                    }
-
-                    false -> callback(listOf())
-                }
+    suspend fun deleteApartment(id: String) {
+        try {
+            firebaseDB.collection(APARTMENTS_COLLECTION_PATH).document(id).delete().await()
+            withContext(Dispatchers.IO) {
+                roomDB.apartmentDao().deleteApartment(id)
             }
+        } catch (exception: Exception) {
+            throw exception
+        }
     }
-    fun refreshAllApartments() {
-       apartmentsListLoadingState.value = LoadingState.LOADING
 
-       // 1. Get the latest local update date
-       val lastUpdated: Long = Apartment.lastUpdated
+    suspend fun refreshAllApartments() {
+        withContext(Dispatchers.IO) {
+            apartmentsListLoadingState.postValue(LoadingState.LOADING)
 
+            val lastUpdated: Long = Apartment.lastUpdated
 
-       // 2.Fetch all the updates from the cloud that was made later than the local last update date
-       getAllApartmentsFromFirestore(lastUpdated) { apartments ->
-           Log.i("TAG", "Firebase returned ${apartments.size}, lastUpdated: $lastUpdated")
-           // 3. Update the local records
-           executor.execute {
-               var time = lastUpdated
-               for (apartment in apartments) {
-                   roomDB.apartmentDao().insert(apartment)
-
-                   apartment.lastUpdated?.let {
-                       if (time < it)
-                           time = apartment.lastUpdated ?: System.currentTimeMillis()
-                   }
-               }
-
-               // 4. Update the local last update date
-               Apartment.lastUpdated = time
-               apartmentsListLoadingState.postValue(LoadingState.LOADED)
-           }
-       }
-   }
-
-    suspend fun addApartment(apartment: Apartment) {
-        suspendCoroutine<Unit> { continuation ->
-            firebaseDB.collection(APARTMENTS_COLLECTION_PATH).add(apartment.json).addOnSuccessListener {
-                continuation.resume(Unit)
-            }.addOnFailureListener { exception ->
-                continuation.resumeWithException(exception)
+            suspendCoroutine { continuation ->
+                firebaseDB.collection(APARTMENTS_COLLECTION_PATH)
+                    .whereGreaterThanOrEqualTo(Apartment.LAST_UPDATED, Timestamp(lastUpdated, 0))
+                    .get().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            GlobalScope.launch {
+                                var time = lastUpdated
+                                for (json in task.result) {
+                                    val apartment = Apartment.fromJson(json.data, json.id)
+                                    roomDB.apartmentDao().insert(apartment)
+                                    apartment.lastUpdated?.let {
+                                        if (time < it)
+                                            time = apartment.lastUpdated ?: System.currentTimeMillis()
+                                    }
+                                }
+                                Apartment.lastUpdated = time
+                                apartmentsListLoadingState.postValue(LoadingState.LOADED)
+                                continuation.resume(Unit)
+                            }
+                        } else {
+                            Log.e("TAG", "Error getting documents: ", task.exception)
+                            apartmentsListLoadingState.postValue(LoadingState.LOADED)
+                            continuation.resumeWithException(task.exception ?: RuntimeException("Unknown error"))
+                        }
+                    }
             }
         }
-
-        refreshAllApartments()
     }
 
+    suspend fun addApartment(apartment: Apartment) {
+        try {
+            firebaseDB.collection(APARTMENTS_COLLECTION_PATH).add(apartment.json).await()
+            refreshAllApartments()
+        } catch (exception: Exception) {
+            throw exception
+        }
+    }
+
+    suspend fun updateApartment(apartment: Apartment) {
+        try {
+            firebaseDB.collection(APARTMENTS_COLLECTION_PATH).document(apartment.id).set(apartment.json).await()
+            refreshAllApartments()
+        } catch (exception: Exception) {
+            throw exception
+        }
+    }
 }

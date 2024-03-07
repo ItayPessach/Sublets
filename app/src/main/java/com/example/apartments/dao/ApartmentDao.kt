@@ -20,8 +20,11 @@ interface ApartmentDao {
     fun delete(apartment: Apartment)
 
     @Query("SELECT * FROM Apartment WHERE id = :id")
-    fun getApartmentById(id: String): LiveData<Apartment>
+    fun getApartment(id: String): LiveData<Apartment>
 
     @Query("UPDATE Apartment SET liked = :liked WHERE id = :id")
     fun setApartmentLiked(id: String, liked: Boolean)
+
+    @Query("DELETE FROM Apartment WHERE id = :id")
+    fun deleteApartment(id: String)
 }

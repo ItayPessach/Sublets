@@ -110,6 +110,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivApartmentsListLocationButton"
@@ -175,6 +176,41 @@
                 app:layout_constraintStart_toEndOf="@+id/tvApartmentsListRooms"
                 app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListTitle"
                 app:srcCompat="@drawable/house_icon" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clApartmentsListActions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListPropertyType">
+
+                <ImageButton
+                    android:id="@+id/ibApartmentsListEditButton"
+                    android:layout_width="32dp"
+                    android:layout_height="28dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/edit_button" />
+
+                <ImageButton
+                    android:id="@+id/ibApartmentsListDeleteButton"
+                    android:layout_width="32dp"
+                    android:layout_height="28dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    app:layout_constraintEnd_toStartOf="@+id/ibApartmentsListEditButton"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/delete_button" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

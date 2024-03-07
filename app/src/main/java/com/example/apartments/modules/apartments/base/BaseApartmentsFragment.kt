@@ -65,7 +65,9 @@ abstract class BaseApartmentsFragment : Fragment() {
 
     private fun reloadData() {
         progressBar.visibility = View.VISIBLE
-        viewModel.refreshAllApartments()
+        lifecycleScope.launch {
+            viewModel.refreshAllApartments()
+        }
         progressBar.visibility = View.GONE
     }
 }
