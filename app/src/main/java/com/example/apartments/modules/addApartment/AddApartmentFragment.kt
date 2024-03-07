@@ -1,5 +1,6 @@
 package com.example.apartments.modules.addApartment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -76,6 +77,7 @@ class AddApartmentFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupUi() {
         titleTextField = binding.etUploadApartmentTitle
         descriptionTextField = binding.etUploadApartmentDescription
@@ -113,6 +115,7 @@ class AddApartmentFragment : Fragment() {
         addImageLauncher.launch(imagePickerIntent)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupDatePicker(view: View, date: Calendar, anotherDatePicker: Boolean = false, anotherDate: Calendar? = null) {
         val year = date.get(Calendar.YEAR)
         val month = date.get(Calendar.MONTH)

@@ -37,9 +37,16 @@ class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?, private val vi
     fun onLikeClick(position: Int) {
         val apartment = apartments?.get(position)
 
-        if (apartment != null) {
+        apartment?.let {
             val liked = !apartment.liked
             viewModel.onLikeClick(apartment.id, liked)
+        }
+    }
+
+    fun onDeleteClick(position: Int) {
+        val apartment = apartments?.get(position)
+        apartment?.let {
+            viewModel.onDeleteClick(it.id)
         }
     }
 }
