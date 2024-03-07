@@ -84,10 +84,6 @@ class UserModel private constructor() {
                     continuation.resumeWithException(exception)
                 }
         }
-
-        withContext(Dispatchers.IO) {
-            roomDB.apartmentDao().setApartmentLiked(apartmentId, true)
-        }
     }
 
     suspend fun removeLikedApartment(apartmentId: String) {
@@ -102,10 +98,6 @@ class UserModel private constructor() {
                 .addOnFailureListener { exception ->
                     continuation.resumeWithException(exception)
                 }
-        }
-
-        withContext(Dispatchers.IO) {
-            roomDB.apartmentDao().setApartmentLiked(apartmentId, false)
         }
     }
 }

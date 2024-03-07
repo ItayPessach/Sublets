@@ -15,17 +15,23 @@ class ApartmentsViewModel: ViewModel() {
         viewModelScope.launch {
             if (liked) {
                 UserModel.instance.addLikedApartment(apartmentId)
+                ApartmentModel.instance.setApartmentLiked(apartmentId, true)
             } else {
                 UserModel.instance.removeLikedApartment(apartmentId)
+                ApartmentModel.instance.setApartmentLiked(apartmentId, false)
             }
         }
     }
 
     fun setAllApartments() {
-        val apartmentsFromRoomDB = ApartmentModel.instance.getAllApartments()
+        apartments = ApartmentModel.instance.getAllApartments()
+    }
+
+    fun getAllApartments(): MutableList<Apartment> {
+        val allApartments = mutableListOf<Apartment>()
         val currentUser = UserModel.instance.currentUser!!
 
-        for (apartment in apartmentsFromRoomDB.value ?: mutableListOf()) {
+        for (apartment in apartments?.value ?: mutableListOf()) {
             if (currentUser.likedApartments.contains(apartment.id)) {
                 apartment.liked = true
             }
@@ -33,9 +39,11 @@ class ApartmentsViewModel: ViewModel() {
             if (currentUser.id == apartment.userId) {
                 apartment.isMine = true
             }
+
+            allApartments.add(apartment)
         }
 
-        apartments = apartmentsFromRoomDB
+        return allApartments
     }
 
     fun getLikedApartments(): MutableList<Apartment> {

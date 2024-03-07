@@ -51,7 +51,7 @@ data class Apartment(
         private const val PRICE_PER_NIGHT_KEY = "pricePerNight"
         private const val DESCRIPTION_KEY = "description"
         private const val CITY_KEY = "city"
-        private const val APARTMENT_TYPE_KEY = "apartmentType"
+        private const val TYPE_KEY = "type"
         private const val NUM_OF_ROOMS_KEY = "numOfRooms"
         private const val START_DATE_KEY = "startDate"
         private const val END_DATE_KEY = "endDate"
@@ -65,13 +65,13 @@ data class Apartment(
             val pricePerNight = (json[PRICE_PER_NIGHT_KEY] as? Long)?.toInt() ?: 0
             val description = json[DESCRIPTION_KEY] as? String ?: ""
             val city = json[CITY_KEY] as? String ?: ""
-            val apartmentType = json[APARTMENT_TYPE_KEY] as? Type ?: Type.House
+            val type = json[TYPE_KEY] as? Type ?: Type.House
             val numOfRooms = (json[NUM_OF_ROOMS_KEY] as? Long)?.toInt() ?: 0
             val startDate = json[START_DATE_KEY] as? Long ?: 0
             val endDate = json[END_DATE_KEY] as? Long ?: 0
             val imageUrl = json[IMAGE_URL_KEY] as? String ?: ""
 
-            val apartment = Apartment(id, userId, title, pricePerNight, description, city, apartmentType, numOfRooms, startDate, endDate, imageUrl)
+            val apartment = Apartment(id, userId, title, pricePerNight, description, city, type, numOfRooms, startDate, endDate, imageUrl)
 
             val timestamp: Timestamp? = json[LAST_UPDATED] as? Timestamp
             timestamp?.let {
@@ -88,7 +88,7 @@ data class Apartment(
                 PRICE_PER_NIGHT_KEY to pricePerNight,
                 DESCRIPTION_KEY to description,
                 CITY_KEY to city,
-                APARTMENT_TYPE_KEY to type,
+                TYPE_KEY to type,
                 NUM_OF_ROOMS_KEY to numOfRooms,
                 START_DATE_KEY to startDate,
                 END_DATE_KEY to endDate,

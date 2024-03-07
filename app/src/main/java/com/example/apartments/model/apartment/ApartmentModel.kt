@@ -8,6 +8,8 @@ import com.example.apartments.dao.AppLocalDatabase
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.model.user.UserModel
 import com.google.firebase.Timestamp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -23,7 +25,6 @@ class ApartmentModel private constructor() {
     private val firebaseDB = FireStoreModel.instance.db
     private var executor = Executors.newSingleThreadExecutor()
     val apartmentsListLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
-    val likedApartmentsListLoadingState: MutableLiveData<LoadingState> = MutableLiveData(LoadingState.LOADED)
 
     companion object {
         const val APARTMENTS_COLLECTION_PATH = "apartments"
@@ -37,6 +38,12 @@ class ApartmentModel private constructor() {
 
     fun getApartmentById(id: String): LiveData<Apartment> {
         return roomDB.apartmentDao().getApartmentById(id)
+    }
+
+    suspend fun setApartmentLiked(id: String, liked: Boolean) {
+        withContext(Dispatchers.IO) {
+            roomDB.apartmentDao().setApartmentLiked(id, liked)
+        }
     }
 
     private fun getAllApartmentsFromFirestore(since: Long, callback: (List<Apartment>) -> Unit) {

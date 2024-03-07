@@ -19,13 +19,13 @@ class ApartmentsFragment : BaseApartmentsFragment() {
     }
 
     override fun setupApartmentsAdapter(): ApartmentsRecyclerAdapter {
-        return ApartmentsRecyclerAdapter(viewModel.apartments?.value, viewModel)
+        return ApartmentsRecyclerAdapter(viewModel.getAllApartments(), viewModel)
     }
 
     override fun observeApartments() {
         viewModel.apartments?.observe(viewLifecycleOwner) {
             progressBar.visibility = View.VISIBLE
-            adapter.apartments = it
+            adapter.apartments = viewModel.getAllApartments()
             adapter.notifyDataSetChanged()
             progressBar.visibility = View.GONE
         }
