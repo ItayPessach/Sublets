@@ -67,7 +67,7 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
             val position = adapterPosition
             if (position != RecyclerView.NO_POSITION) {
                 Log.d(TAG, "Edit button clicked")
-//                adapter.onEditClick(position) // navigate to add post fragment with apartment data ?
+                adapter.onEditClick(position) // navigate to add post fragment with apartment data ?
             }
         }
 

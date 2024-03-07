@@ -12,8 +12,12 @@ import com.example.apartments.modules.apartments.base.BaseApartmentsFragment
 class LikedApartmentsFragment : BaseApartmentsFragment() {
     private var TAG = "LikedApartmentsFragment"
 
+    private val onEditClick: (apartmentId: String) -> Unit = {
+        findNavController().navigate(R.id.action_likedApartmentsFragment_to_editApartmentFragment, bundleOf("apartmentId" to it))
+    }
+
     override fun setupApartmentsAdapter(): ApartmentsRecyclerAdapter {
-        return ApartmentsRecyclerAdapter(viewModel.getLikedApartments(), viewModel)
+        return ApartmentsRecyclerAdapter(viewModel.getLikedApartments(), viewModel, onEditClick)
     }
 
     override fun observeApartments() {

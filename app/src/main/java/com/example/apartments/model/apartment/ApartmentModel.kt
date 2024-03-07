@@ -11,7 +11,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -36,7 +35,7 @@ class ApartmentModel private constructor() {
         return roomDB.apartmentDao().getAll()
     }
 
-    fun getApartmentById(id: String): LiveData<Apartment> {
+    fun getApartment(id: String): LiveData<Apartment> {
         return roomDB.apartmentDao().getApartment(id)
     }
 
@@ -101,4 +100,12 @@ class ApartmentModel private constructor() {
         }
     }
 
+    suspend fun updateApartment(apartment: Apartment) {
+        try {
+            firebaseDB.collection(APARTMENTS_COLLECTION_PATH).document(apartment.id).set(apartment.json).await()
+            refreshAllApartments()
+        } catch (exception: Exception) {
+            throw exception
+        }
+    }
 }

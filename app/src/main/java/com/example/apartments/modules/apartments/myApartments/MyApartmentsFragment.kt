@@ -13,8 +13,12 @@ import com.example.apartments.modules.apartments.base.BaseApartmentsFragment
 class MyApartmentsFragment : BaseApartmentsFragment() {
     private var TAG = "MyApartmentsFragment"
 
+    private val onEditClick: (apartmentId: String) -> Unit = {
+        findNavController().navigate(R.id.action_myApartmentsFragment_to_editApartmentFragment, bundleOf("apartmentId" to it))
+    }
+
     override fun setupApartmentsAdapter(): ApartmentsRecyclerAdapter {
-        return ApartmentsRecyclerAdapter(viewModel.getMyApartments(), viewModel)
+        return ApartmentsRecyclerAdapter(viewModel.getMyApartments(), viewModel, onEditClick)
     }
 
     override fun observeApartments() {
