@@ -123,7 +123,7 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
         addImageBtn = binding.ibUpsertApartmentAddPhotoButton
         uploadApartmentBtn = binding.btnUpsertApartmentUpload
 
-        val locationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, RegionsSingelton.regionsSearchResult!!.toList())
+        val locationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, RegionsSingelton.regionsList)
         locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
         locationSelectField.adapter = locationAdapter
 
