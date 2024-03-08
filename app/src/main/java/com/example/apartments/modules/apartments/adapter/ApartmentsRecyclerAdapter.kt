@@ -27,7 +27,6 @@ class ApartmentsRecyclerAdapter(var apartments: List<Apartment>?, private val vi
     override fun onBindViewHolder(holder: ApartmentsViewHolder, position: Int) {
         val apartment = apartments?.get(position)
         holder.bind(apartment)
-        // holder.image?.setImageResource(apartment.image)
     }
 
     fun onClick(apartmentId: Int) {

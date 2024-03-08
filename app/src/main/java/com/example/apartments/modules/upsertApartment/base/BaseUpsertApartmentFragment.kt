@@ -44,30 +44,34 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
-    protected var startDate: Calendar = Calendar.getInstance()
-    protected var endDate: Calendar = Calendar.getInstance()
-    protected var imageUri: Uri? = null
-    protected val types = arrayOf("Apartment", "House", "Villa", "Penthouse")
+    private var startDate: Calendar = Calendar.getInstance()
+    private var endDate: Calendar = Calendar.getInstance()
+    private var imageUri: Uri? = null
+    private val types = arrayOf("Apartment", "House", "Villa", "Penthouse")
 
-    protected lateinit var textTextView: TextView
-    protected lateinit var titleTextField: EditText
-    protected lateinit var descriptionTextField: EditText
-    protected lateinit var roomsTextField: EditText
-    protected lateinit var priceTextField: EditText
-    protected lateinit var locationSelectField: Spinner
-    protected lateinit var typeSelectField: Spinner
-    protected lateinit var datesTextView: TextView
-    protected lateinit var datesBtn: ImageButton
-    protected lateinit var addImageBtn: ImageButton
-    protected lateinit var uploadApartmentBtn: Button
-
-    protected lateinit var _binding: FragmentBaseUpsertApartmentBinding
-    private lateinit var viewModel: BaseUpsertApartmentViewModel
+    private lateinit var textTextView: TextView
+    private lateinit var titleTextField: EditText
+    private lateinit var descriptionTextField: EditText
+    private lateinit var roomsTextField: EditText
+    private lateinit var priceTextField: EditText
+    private lateinit var locationSelectField: Spinner
+    private lateinit var typeSelectField: Spinner
+    private lateinit var datesTextView: TextView
+    private lateinit var datesBtn: ImageButton
+    private lateinit var addImageBtn: ImageButton
+    private lateinit var uploadApartmentBtn: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var layout: View
-    protected val binding get() = _binding
 
-    protected val addImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private lateinit var _binding: FragmentBaseUpsertApartmentBinding
+    private val binding get() = _binding
+    private lateinit var viewModel: BaseUpsertApartmentViewModel
+
+
+
+
+
+    private val addImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val selectedImageUri = result.data?.data
 

@@ -18,9 +18,9 @@ import com.example.apartments.modules.apartments.adapter.OnItemClickListener
 import kotlinx.coroutines.launch
 
 abstract class BaseApartmentsFragment : Fragment() {
-    protected lateinit var binding: FragmentApartmentsBinding
+    private lateinit var binding: FragmentApartmentsBinding
+    private lateinit var recyclerView: RecyclerView
     protected lateinit var viewModel: ApartmentsViewModel
-    protected lateinit var recyclerView: RecyclerView
     protected lateinit var adapter: ApartmentsRecyclerAdapter
     protected lateinit var progressBar: ProgressBar
 
