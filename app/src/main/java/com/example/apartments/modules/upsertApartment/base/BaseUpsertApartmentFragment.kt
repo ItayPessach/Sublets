@@ -61,15 +61,12 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
     private lateinit var addImageBtn: ImageButton
     private lateinit var uploadApartmentBtn: Button
     private lateinit var progressBar: ProgressBar
+    private lateinit var backButton: ImageButton
     private lateinit var layout: View
 
     private lateinit var _binding: FragmentBaseUpsertApartmentBinding
     private val binding get() = _binding
     private lateinit var viewModel: BaseUpsertApartmentViewModel
-
-
-
-
 
     private val addImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -114,7 +111,7 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setupUi(apartment : Apartment? = null) {
+    protected fun setupUi(apartment : Apartment? = null) {
         textTextView = binding.tvUpsertApartmentText
         titleTextField = binding.etUpsertApartmentTitle
         descriptionTextField = binding.etUpsertApartmentDescription
@@ -126,6 +123,7 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
         datesBtn = binding.ibUpsertApartmentDates
         addImageBtn = binding.ibUpsertApartmentAddPhotoButton
         uploadApartmentBtn = binding.btnUpsertApartmentUpload
+        backButton = binding.ibUpsertFragmentBack
 
         val locationAdapter = ArrayAdapter(requireContext(), R.layout.spinner_item, RegionsSingelton.regionsList)
         locationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item)
@@ -137,6 +135,7 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
 
         datesBtn.setOnClickListener(::onDatesButtonClicked)
         addImageBtn.setOnClickListener(::onAddImageButtonClicked)
+        backButton.setOnClickListener(::onBackButtonClicked)
 
         if (apartment != null) {
             Log.d(TAG, "apartment: $apartment")
@@ -170,6 +169,7 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
                 })
             uploadApartmentBtn.setOnClickListener { onUpsertApartmentButtonClicked(it, apartment) }
         } else {
+            backButton.visibility = View.GONE
             uploadApartmentBtn.setOnClickListener(::onUpsertApartmentButtonClicked)
         }
     }
@@ -282,5 +282,9 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
                 Toast.LENGTH_SHORT,
             ).show()
         }
+    }
+
+    private fun onBackButtonClicked(view: View) {
+        Navigation.findNavController(view).navigate(R.id.apartmentsFragment)
     }
 }

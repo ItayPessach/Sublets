@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.example.apartments.R
 import com.example.apartments.databinding.FragmentExpandedApartmentBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.user.UserModel
@@ -41,6 +44,7 @@ class ExpandedApartmentFragment : Fragment() {
     private lateinit var personTextView: TextView
     private lateinit var emailTextView: TextView
     private lateinit var phoneTextView: TextView
+    private lateinit var backButton: ImageButton
 
     private val args: ExpandedApartmentFragmentArgs by navArgs()
 
@@ -64,6 +68,9 @@ class ExpandedApartmentFragment : Fragment() {
         emailTextView = binding.tvExpandedApartmentEmail
         phoneTextView = binding.tvExpandedApartmentPhone
         image = binding.ivExpandedApartmentImage
+        backButton = binding.ibExpandedFragmentBack
+
+        backButton.setOnClickListener(::onBackButtonClicked)
 
         val apartmentId: String = args.apartmentId
         viewModel.setApartment(apartmentId)
@@ -116,5 +123,9 @@ class ExpandedApartmentFragment : Fragment() {
 
         progressBar.visibility = View.GONE
         layout.visibility = View.VISIBLE
+    }
+
+    private fun onBackButtonClicked(view: View) {
+        Navigation.findNavController(view).navigate(R.id.apartmentsFragment)
     }
 }
