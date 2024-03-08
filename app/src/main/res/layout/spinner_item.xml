@@ -2,7 +2,8 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
+    android:fontFamily="@font/outfit_font"
+    android:gravity="left"
     android:padding="16dp"
-    android:textColor="@color/black"
+    android:textColor="@android:color/white"
     android:textSize="16sp" />

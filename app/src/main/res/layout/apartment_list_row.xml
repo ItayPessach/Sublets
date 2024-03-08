@@ -9,7 +9,7 @@
     android:padding="16dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:padding="8dp"
@@ -69,8 +69,6 @@
                 android:text="Location here"
                 android:textColor="#FF000000"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/ivApartmentsListRoomsButton"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/ivApartmentsListLocationButton"
                 app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListTitle" />
 
@@ -84,24 +82,19 @@
                 android:textColor="#FF000000"
                 android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@+id/tvApartmentsListLocation"
-                app:layout_constraintEnd_toStartOf="@+id/ivApartmentsListPropertyButton"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/ivApartmentsListRoomsButton" />
 
             <TextView
                 android:id="@+id/tvApartmentsListPropertyType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/outfit_font"
                 android:text="House"
                 android:textColor="#FF000000"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/tvApartmentsListLocation"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/ivApartmentsListPropertyButton" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/tvApartmentsListRooms"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageButton
                 android:id="@+id/ibApartmentsListLikeButton"
@@ -122,8 +115,7 @@
                 android:layout_height="24dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/tvApartmentsListDates"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivApartmentsListLocationButton"
                 app:srcCompat="@drawable/calendar_icon" />
@@ -157,10 +149,8 @@
                 android:id="@+id/ivApartmentsListRoomsButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="64dp"
                 android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toStartOf="@+id/tvApartmentsListRooms"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tvApartmentsListLocation"
                 app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListTitle"
                 app:srcCompat="@drawable/rooms_icon" />
@@ -169,11 +159,9 @@
                 android:id="@+id/ivApartmentsListPropertyButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/tvApartmentsListPropertyType"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/tvApartmentsListRooms"
                 app:layout_constraintTop_toBottomOf="@+id/tvApartmentsListTitle"
                 app:srcCompat="@drawable/house_icon" />
 

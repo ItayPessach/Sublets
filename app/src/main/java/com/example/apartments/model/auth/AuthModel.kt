@@ -20,7 +20,7 @@ class AuthModel {
 
     suspend fun signIn(email: String, password: String): AuthResult {
         Log.d(TAG, "user sign in with email: $email and password: $password")
-       return auth.signInWithEmailAndPassword(email, password).await()
+        return auth.signInWithEmailAndPassword(email, password).await()
     }
 
     fun signOut() {

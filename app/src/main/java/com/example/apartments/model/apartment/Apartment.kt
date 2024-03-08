@@ -65,7 +65,7 @@ data class Apartment(
             val pricePerNight = (json[PRICE_PER_NIGHT_KEY] as? Long)?.toInt() ?: 0
             val description = json[DESCRIPTION_KEY] as? String ?: ""
             val city = json[CITY_KEY] as? String ?: ""
-            val type = json[TYPE_KEY] as? Type ?: Type.House
+            val type = Type.valueOf(json[TYPE_KEY] as String) as? Type ?: Type.House
             val numOfRooms = (json[NUM_OF_ROOMS_KEY] as? Long)?.toInt() ?: 0
             val startDate = json[START_DATE_KEY] as? Long ?: 0
             val endDate = json[END_DATE_KEY] as? Long ?: 0
