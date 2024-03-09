@@ -1,4 +1,4 @@
-package com.example.apartments.common
+package com.example.apartments.utils
 
 import android.text.TextUtils
 import android.widget.EditText

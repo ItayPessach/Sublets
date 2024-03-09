@@ -7,31 +7,46 @@
     android:background="@drawable/app_gradient_background"
     tools:context=".modules.register.RegisterFragment">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="32dp"
-        android:scaleType="centerInside"
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/outfit"
+        android:text="Let's start your sublet journey"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/avatar" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivRegisterFragmentUserAvatar"
+        android:layout_width="0dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10"
+        app:srcCompat="@drawable/user_circle" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:fontFamily="@font/outfit"
         android:text="Name"
-        android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/btnRegisterFragmentAddImage" />
 
     <EditText
-        android:id="@+id/etRegisterFragmentMain"
+        android:id="@+id/etRegisterFragmentName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -39,11 +54,16 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_corner"
         android:ems="10"
-        android:hint="Enter your name here"
+        android:fontFamily="@font/outfit"
+        android:hint="Name"
         android:inputType="text"
-        android:padding="18dp"
-        android:textColorHint="@color/black"
+        android:padding="12dp"
+        android:drawableLeft="@drawable/ic_baseline_perm_identity_24"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -53,11 +73,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/outfit"
         android:text="Email"
-        android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRegisterFragmentMain" />
+        app:layout_constraintTop_toBottomOf="@+id/etRegisterFragmentName" />
 
     <EditText
         android:id="@+id/etRegisterFragmentEmail"
@@ -68,10 +89,14 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_corner"
         android:ems="10"
-        android:hint="Enter your email here"
+        android:fontFamily="@font/outfit"
+        android:hint="Email"
         android:inputType="textEmailAddress"
-        android:padding="18dp"
-        android:textColorHint="@color/black"
+        android:padding="12dp"
+        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -82,10 +107,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/outfit"
         android:text="Password"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textColorHint="@color/primary"
-        android:textSize="24sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etRegisterFragmentEmail" />
 
@@ -98,55 +124,108 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/rounded_corner"
         android:ems="10"
-        android:hint="Enter your password here"
+        android:fontFamily="@font/outfit"
+        android:hint="Password"
         android:inputType="textPassword"
-        android:padding="18dp"
-        android:textColorHint="@color/black"
+        android:padding="12dp"
+        android:drawableLeft="@drawable/ic_baseline_security_24"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/outfit"
+        android:text="Phone Number"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etRegisterFragmentPassword" />
+
+    <EditText
+        android:id="@+id/etRegisterFragmentPhoneNumber"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:fontFamily="@font/outfit"
+        android:hint="Phone Number"
+        android:inputType="text"
+        android:padding="12dp"
+        android:drawableLeft="@drawable/ic_baseline_call_24"
+        android:drawablePadding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <Button
         android:id="@+id/btnRegisterFragmentRegister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="120dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="64dp"
-        android:backgroundTint="@color/black"
+        android:layout_marginEnd="120dp"
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/outfit_font"
         android:shadowDx="10"
         android:text="Register"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etRegisterFragmentPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/etRegisterFragmentPhoneNumber" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/outfit"
         android:text="Already have an account?"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegisterFragmentRegister" />
 
     <Button
         android:id="@+id/btnRegisterFragmentSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
+        android:fontFamily="@font/outfit"
         android:text="Sign in"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/btnRegisterFragmentAddImage"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Add Image"
+        android:textStyle="bold"
+        app:cornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivRegisterFragmentUserAvatar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

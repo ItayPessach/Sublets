@@ -1,70 +1,49 @@
 package com.example.apartments.modules.apartments
 
-import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import com.example.apartments.R
-import com.example.apartments.model.apartment.Apartment
-import com.example.apartments.model.apartment.ApartmentModel
+import com.example.apartments.model.user.UserModel
 import com.example.apartments.modules.apartments.adapter.ApartmentsRecyclerAdapter
 import com.example.apartments.modules.apartments.adapter.OnItemClickListener
+import com.example.apartments.modules.apartments.base.BaseApartmentsFragment
 
-class ApartmentsFragment : Fragment() {
+
+class ApartmentsFragment : BaseApartmentsFragment() {
     private var TAG = "ApartmentsFragment"
 
-    private var apartmentsRecyclerView: RecyclerView? = null
-    private var adapter: ApartmentsRecyclerAdapter? = null
-    var apartments: List<Apartment>? = null
-    var progressBar: ProgressBar? = null;
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_apartments, container, false)
-        progressBar = view.findViewById(R.id.progressBar)
-
-        progressBar?.visibility = View.VISIBLE
-
-        adapter = ApartmentsRecyclerAdapter(this.apartments)
-
-        ApartmentModel.instance.getAllApartments { apartments ->
-            this.apartments = apartments
-            adapter?.apartments = apartments
-            adapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
-        }
-
-        apartmentsRecyclerView = view.findViewById(R.id.rvApartmentsFragmentList)
-        apartmentsRecyclerView?.setHasFixedSize(true)
-        apartmentsRecyclerView?.layoutManager = LinearLayoutManager(context)
-
-        adapter?.listener = object: OnItemClickListener {
-            override fun onItemClick(apartmentId: Int) {
-                Log.d(TAG, "ApartmentsRecyclerAdapter: apartment id is $apartmentId")
-            }
-        }
-
-        apartmentsRecyclerView?.adapter = adapter
-
-        return view
+    private val onEditClick: (apartmentId: String) -> Unit = {
+        findNavController().navigate(R.id.action_apartmentsFragment_to_editApartmentFragment, bundleOf("apartmentId" to it))
     }
 
-    override fun onResume() {
-        super.onResume()
+    override suspend fun preparations() {
+        return UserModel.instance.getMe()
+    }
 
-        ApartmentModel.instance.getAllApartments { apartments ->
-            this.apartments = apartments
-            adapter?.apartments = apartments
-            adapter?.notifyDataSetChanged()
-            progressBar?.visibility = View.GONE
+    override fun setupApartmentsAdapter(): ApartmentsRecyclerAdapter {
+        return ApartmentsRecyclerAdapter(viewModel.getAllApartments(), viewModel, onEditClick)
+    }
+
+    override fun observeApartments() {
+        viewModel.apartments?.observe(viewLifecycleOwner) {
+            progressBar.visibility = View.VISIBLE
+            adapter.apartments = viewModel.getAllApartments()
+            adapter.notifyDataSetChanged()
+            progressBar.visibility = View.GONE
+        }
+    }
+
+    override fun setupApartmentsAdapterListener(): OnItemClickListener {
+        return object: OnItemClickListener {
+            override fun onItemClick(apartmentId: Int) {
+                Log.d(TAG, "ApartmentsRecyclerAdapter: apartment id is $apartmentId")
+                val apartment = viewModel.apartments?.value?.get(apartmentId)
+                apartment?.let {
+                    findNavController().navigate(R.id.action_apartmentsFragment_to_expandedApartmentFragment, bundleOf("apartmentId" to apartment.id))
+                }
+            }
         }
     }
 }
