@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apartments.R
 import com.example.apartments.model.apartment.Apartment
-import com.example.apartments.utils.dateUtils
+import com.example.apartments.utils.DateUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 
@@ -87,7 +87,7 @@ class ApartmentsViewHolder(itemView: View, adapter: ApartmentsRecyclerAdapter): 
         locationTextView.text = apartment?.city
         roomsTextView.text = apartment?.numOfRooms.toString()
         propertyTypeTextView.text = apartment?.type.toString()
-        datesTextView.text = "${dateUtils.formatDate(apartment?.startDate ?: 0)} - ${dateUtils.formatDate(apartment?.endDate ?: 0)}"
+        datesTextView.text = "${DateUtils.formatDate(apartment?.startDate ?: 0)} - ${DateUtils.formatDate(apartment?.endDate ?: 0)}"
 
         Picasso.get()
             .load(apartment?.imageUrl)

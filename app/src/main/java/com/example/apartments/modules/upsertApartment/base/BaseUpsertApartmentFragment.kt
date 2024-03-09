@@ -28,15 +28,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.apartments.R
 import com.example.apartments.base.MyApplication
-import com.example.apartments.common.FirebaseStorageModel
-import com.example.apartments.common.RequiredValidation
+import com.example.apartments.model.FirebaseStorageModel
+import com.example.apartments.utils.RequiredValidation
 import com.example.apartments.databinding.FragmentBaseUpsertApartmentBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.apartment.ApartmentModel
 import com.example.apartments.model.apartment.Type
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.retrofit.RegionsSingelton
-import com.example.apartments.utils.dateUtils
+import com.example.apartments.utils.DateUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.coroutines.Dispatchers
@@ -147,7 +147,7 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
             priceTextField.setText(apartment.pricePerNight.toString())
             locationSelectField.setSelection(locationAdapter.getPosition(apartment.city))
             typeSelectField.setSelection(typeAdapter.getPosition(apartment.type.toString()))
-            datesTextView.text = "${dateUtils.formatDate(apartment.startDate)} - ${dateUtils.formatDate(apartment.endDate)}"
+            datesTextView.text = "${DateUtils.formatDate(apartment.startDate)} - ${DateUtils.formatDate(apartment.endDate)}"
             imageUri = Uri.parse(apartment.imageUrl)
             startDate.timeInMillis = apartment.startDate
             endDate.timeInMillis = apartment.endDate
@@ -197,7 +197,7 @@ abstract class BaseUpsertApartmentFragment(val TAG: String) : Fragment() {
                 if (anotherDatePicker) {
                     setupDatePicker(view, anotherDate!!)
                 } else {
-                    datesTextView.text = "${dateUtils.formatDate(startDate.timeInMillis)} - ${dateUtils.formatDate(endDate.timeInMillis)}"
+                    datesTextView.text = "${DateUtils.formatDate(startDate.timeInMillis)} - ${DateUtils.formatDate(endDate.timeInMillis)}"
                 }
             },
             year,

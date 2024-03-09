@@ -1,14 +1,12 @@
 package com.example.apartments.model.user
 
 import android.util.Log
-import com.example.apartments.common.FireStoreModel
+import com.example.apartments.model.FireStoreModel
 import com.example.apartments.dao.AppLocalDatabase
 import com.example.apartments.model.auth.AuthModel
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.lang.Exception
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException

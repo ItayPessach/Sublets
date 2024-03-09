@@ -21,7 +21,7 @@ import com.example.apartments.R
 import com.example.apartments.databinding.FragmentExpandedApartmentBinding
 import com.example.apartments.model.apartment.Apartment
 import com.example.apartments.model.user.UserModel
-import com.example.apartments.utils.dateUtils
+import com.example.apartments.utils.DateUtils
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.coroutines.launch
@@ -96,7 +96,7 @@ class ExpandedApartmentFragment : Fragment() {
         locationTextView.text = apartment.city
         roomsTextView.text = apartment.numOfRooms.toString()
         propertyTypeTextView.text = apartment.type.toString()
-        datesTextView.text = "${dateUtils.formatDate(apartment.startDate)} - ${dateUtils.formatDate(apartment.endDate)}"
+        datesTextView.text = "${DateUtils.formatDate(apartment.startDate)} - ${DateUtils.formatDate(apartment.endDate)}"
 
         val user = UserModel.instance.fetchUser(apartment.userId)
         user?.let {

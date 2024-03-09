@@ -14,7 +14,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.apartments.R
 import com.example.apartments.base.MyApplication
-import com.example.apartments.common.RequiredValidation
+import com.example.apartments.utils.RequiredValidation
 import com.example.apartments.databinding.FragmentLoginBinding
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.modules.register.RegisterFragment

@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apartments.common.FirebaseStorageModel
+import com.example.apartments.model.FirebaseStorageModel
 import com.example.apartments.model.user.UpdateUserInput
 import com.example.apartments.model.user.User
 import com.example.apartments.model.user.UserModel

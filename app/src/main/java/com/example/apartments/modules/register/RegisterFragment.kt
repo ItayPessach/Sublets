@@ -19,18 +19,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.apartments.R
 import com.example.apartments.base.MyApplication
-import com.example.apartments.common.FirebaseStorageModel
-import com.example.apartments.common.RequiredValidation
+import com.example.apartments.model.FirebaseStorageModel
+import com.example.apartments.utils.RequiredValidation
 import com.example.apartments.databinding.FragmentRegisterBinding
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.model.user.User
 import com.example.apartments.model.user.UserModel
-import com.example.apartments.modules.login.LoginFragment
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class RegisterFragment : Fragment() {

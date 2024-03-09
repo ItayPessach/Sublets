@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.apartments.MainActivity
 import com.example.apartments.R
 import com.example.apartments.base.MyApplication
-import com.example.apartments.common.RequiredValidation
+import com.example.apartments.utils.RequiredValidation
 import com.example.apartments.databinding.FragmentProfileBinding
 import com.example.apartments.model.auth.AuthModel
 import com.example.apartments.model.user.UpdateUserInput

@@ -1,4 +1,4 @@
-package com.example.apartments.common
+package com.example.apartments.model
 
 import android.net.Uri
 import android.util.Log

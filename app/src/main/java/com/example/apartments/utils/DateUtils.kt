@@ -3,7 +3,7 @@ package com.example.apartments.utils
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class dateUtils {
+class DateUtils {
     companion object {
         fun formatDate(milliseconds: Long): String {
             val formatter = SimpleDateFormat("dd/MM/yyyy")

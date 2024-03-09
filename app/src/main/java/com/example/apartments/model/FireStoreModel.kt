@@ -1,4 +1,4 @@
-package com.example.apartments.common
+package com.example.apartments.model
 
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore

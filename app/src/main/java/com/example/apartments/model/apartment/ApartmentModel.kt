@@ -3,7 +3,7 @@ package com.example.apartments.model.apartment
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.apartments.common.FireStoreModel
+import com.example.apartments.model.FireStoreModel
 import com.example.apartments.dao.AppLocalDatabase
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.Dispatchers
