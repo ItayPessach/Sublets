@@ -23,8 +23,9 @@
         android:id="@+id/clExpandedApartmentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="0dp">
 
         <ImageButton
             android:id="@+id/ibExpandedFragmentBack"
@@ -49,7 +50,7 @@
 
         <TextView
             android:id="@+id/tvExpandedApartmentTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
@@ -58,6 +59,7 @@
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivExpandedApartmentImage" />
 
@@ -66,13 +68,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="200dp" />
+            app:layout_constraintGuide_begin="250dp" />
 
         <ImageView
             android:id="@+id/ivExpandedApartmentCalendarIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginStart="64dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:src="@drawable/calendar_icon"
             app:layout_constraintStart_toEndOf="@+id/tvExpandedApartmentTitle"
@@ -106,7 +108,7 @@
 
         <TextView
             android:id="@+id/tvExpandedApartmentLocation"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
@@ -115,6 +117,7 @@
             android:textColor="#000000"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toEndOf="@+id/ivExpandedApartmentLocationIcon"
             app:layout_constraintTop_toBottomOf="@+id/tvExpandedApartmentTitle" />
 
