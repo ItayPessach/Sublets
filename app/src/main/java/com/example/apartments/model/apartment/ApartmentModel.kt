@@ -58,7 +58,6 @@ class ApartmentModel private constructor() {
 
     suspend fun refreshAllApartments() {
         withContext(Dispatchers.IO) {
-            handleDeletes()
             apartmentsListLoadingState.postValue(LoadingState.LOADING)
 
             val lastUpdated: Long = Apartment.lastUpdated
@@ -108,11 +107,5 @@ class ApartmentModel private constructor() {
         } catch (exception: Exception) {
             throw exception
         }
-    }
-
-    // TODO: Implement the handle deletes method
-    private fun handleDeletes() {
-        Apartment.lastUpdated = 0
-        roomDB.apartmentDao().deleteAll()
     }
 }
