@@ -27,4 +27,7 @@ interface ApartmentDao {
 
     @Query("DELETE FROM Apartment WHERE id = :id")
     fun deleteApartment(id: String)
+
+    @Query("DELETE FROM Apartment")
+    fun deleteAll()
 }
